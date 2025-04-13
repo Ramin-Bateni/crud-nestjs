@@ -1,3 +1,4 @@
+import { BadRequestException } from '@nestjs/common';
 import { PhoneNumberUtil } from 'google-libphonenumber';
 
 export class PhoneNumber {
@@ -5,9 +6,9 @@ export class PhoneNumber {
 
   constructor(phone: string) {
     const phoneUtil = PhoneNumberUtil.getInstance();
-    const parsed = phoneUtil.parseAndKeepRawInput(phone, 'US');
-    if (!phoneUtil.isValidNumberForRegion(parsed, 'US')) {
-      throw new Error('Invalid phone number');
+    const parsed = phoneUtil.parse(phone);
+    if (!phoneUtil.isValidNumber(parsed)) {
+      throw new BadRequestException('Invalid phone number');
     }
 
     this.value = phoneUtil.format(parsed, 1); // E.164
