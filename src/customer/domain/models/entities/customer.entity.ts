@@ -5,30 +5,30 @@ import { BaseSchema } from 'src/common/schema/base.schema';
 import { IsValidPhoneNumber, IsValidEmail, IsValidBankAccount } from 'src/common/validators';
 
 export class Customer extends BaseSchema {
-  @Prop({ type: String, required: true })
-  @ApiProperty({ type: String, required: true })
+  @Prop({ type: String, required: true, maxlength: 50 })
+  @ApiProperty({ type: String, required: true, maxLength: 50 })
   firstName: string;
 
-  @Prop({ type: String, required: true })
-  @ApiProperty({ type: String, required: true })
+  @Prop({ type: String, required: true, maxlength: 50 })
+  @ApiProperty({ type: String, required: true, maxLength: 50 })
   lastName: string;
 
   @Prop({ type: Date, required: true })
   @ApiProperty({ type: Date, required: true })
   dateOfBirth: Date;
 
-  @Prop({ type: String, required: true })
-  @ApiProperty({ type: String, required: true })
+  @Prop({ type: String, required: true, match: /^\d+$/, maxlength: 15 })
+  @ApiProperty({ type: String, required: true, maxLength: 15 })
   @IsValidPhoneNumber()
   phoneNumber: string;
 
-  @Prop({ type: String, required: true, unique: true })
-  @ApiProperty({ type: String, required: true })
+  @Prop({ type: String, required: true, unique: true, maxlength: 100 })
+  @ApiProperty({ type: String, required: true, maxLength: 100 })
   @IsValidEmail()
   email: string;
 
-  @Prop({ type: String, required: true })
-  @ApiProperty({ type: String, required: true })
+  @Prop({ type: String, required: true, maxlength: 34 })
+  @ApiProperty({ type: String, required: true, maxLength: 34 })
   @IsValidBankAccount()
   bankAccountNumber: string;
 

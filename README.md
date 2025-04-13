@@ -76,32 +76,46 @@ The application includes a Customer entity with the following fields:
 
 ```typescript
 export class Customer extends BaseSchema {
-  @Prop({ type: String, required: true })
-  @ApiProperty({ type: String, required: true })
+  @Prop({ type: String, required: true, maxlength: 50 })
+  @ApiProperty({ type: String, required: true, maxLength: 50 })
   firstName: string;
 
-  @Prop({ type: String, required: true })
-  @ApiProperty({ type: String, required: true })
+  @Prop({ type: String, required: true, maxlength: 50 })
+  @ApiProperty({ type: String, required: true, maxLength: 50 })
   lastName: string;
 
   @Prop({ type: Date, required: true })
   @ApiProperty({ type: Date, required: true })
   dateOfBirth: Date;
 
-  @Prop({ type: String, required: true })
-  @ApiProperty({ type: String, required: true })
+  @Prop({ type: String, required: true, match: /^\d+$/, maxlength: 15 })
+  @ApiProperty({ type: String, required: true, maxLength: 15 })
   @IsValidPhoneNumber()
   phoneNumber: string;
 
-  @Prop({ type: String, required: true, unique: true })
-  @ApiProperty({ type: String, required: true })
+  @Prop({ type: String, required: true, unique: true, maxlength: 100 })
+  @ApiProperty({ type: String, required: true, maxLength: 100 })
+  @IsValidEmail()
   email: string;
 
-  @Prop({ type: String, required: true })
-  @ApiProperty({ type: String, required: true })
+  @Prop({ type: String, required: true, maxlength: 34 })
+  @ApiProperty({ type: String, required: true, maxLength: 34 })
+  @IsValidBankAccount()
   bankAccountNumber: string;
 }
 ```
+
+### Field Character Limits
+
+The Customer entity enforces the following character limits for string fields:
+
+- First Name: Maximum 50 characters
+- Last Name: Maximum 50 characters
+- Phone Number: Maximum 15 digits (stored as digits only)
+- Email: Maximum 100 characters
+- Bank Account Number: Maximum 34 characters (IBAN standard length)
+
+These limits are enforced both at the database level and through API validation.
 
 ### Unique Constraints
 
@@ -117,11 +131,12 @@ The application includes a custom validator for phone numbers using Google's lib
 - Verifies that the number is a mobile number (not a landline)
 - Supports international phone number formats
 - Returns clear error messages for invalid numbers
+- Stores phone numbers in an optimized format (digits only) to minimize storage space
 
-Example of valid mobile numbers:
-- +1 650-253-0000 (US)
-- +44 7911 123456 (UK)
-- +98 912 123 4567 (Iran)
+Example of valid mobile numbers (stored as digits only):
+- +1 650-253-0000 → 16502530000
+- +44 7911 123456 → 447911123456
+- +98 912 123 4567 → 989121234567
 
 ## Prerequisites
 
