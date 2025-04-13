@@ -143,6 +143,54 @@ Example of valid mobile numbers (stored as digits only):
 - Node.js (v16 or higher)
 - npm (v7 or higher)
 - MongoDB (v4.4 or higher)
+- Docker and Docker Compose (for containerized deployment)
+
+## Docker Setup
+
+The project includes Docker configuration for easy deployment and development. The setup includes:
+
+- MongoDB container
+- NestJS application container
+- Persistent volume for MongoDB data
+- Custom network for service communication
+
+### Docker Configuration Files
+
+1. `docker-compose.yml`: Defines the services, networks, and volumes
+2. `Dockerfile`: Builds the NestJS application image
+
+### Running with Docker
+
+To start the application using Docker:
+
+```bash
+# Build and start the containers
+$ docker-compose up --build
+
+# To run in detached mode
+$ docker-compose up -d --build
+
+# To stop the containers
+$ docker-compose down
+
+# To view logs
+$ docker-compose logs -f
+```
+
+The services will be available at:
+- NestJS application: http://localhost:3000
+- MongoDB: mongodb://localhost:27017
+
+### Environment Variables in Docker
+
+The Docker setup uses the following environment variables:
+```env
+MONGODB_URI=mongodb://mongodb:27017/nestjs_db
+NODE_ENV=development
+PORT=3000
+```
+
+Note: The MongoDB URI in Docker points to the MongoDB service name (`mongodb`) instead of `localhost`.
 
 ## Environment Variables
 
@@ -173,6 +221,9 @@ $ git clone [repository-url]
 
 # Install dependencies
 $ npm install
+
+# OR using Docker
+$ docker-compose up --build
 ```
 
 ## Running the application
@@ -183,6 +234,9 @@ $ npm run start:dev
 
 # Production mode
 $ npm run start:prod
+
+# Using Docker
+$ docker-compose up --build
 ```
 
 ## Test
