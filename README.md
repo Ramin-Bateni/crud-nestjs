@@ -54,6 +54,21 @@ src/
 - Node.js (v16 or higher)
 - npm (v7 or higher)
 
+## Environment Variables
+
+The application uses environment variables for configuration. Create a `.env` file in the root directory with the following variables:
+
+```env
+# Server Configuration
+PORT=3000
+NODE_ENV=development
+```
+
+Make sure to:
+- Never commit the `.env` file to version control
+- Use different values for different environments (development, staging, production)
+- Keep sensitive information secure
+
 ## Installation
 
 ```bash
