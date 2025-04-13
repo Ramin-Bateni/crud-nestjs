@@ -3,9 +3,10 @@ import {
   IsString,
   IsEmail,
   IsDateString,
-  Matches,
   Length,
+  Validate,
 } from 'class-validator';
+import { PhoneNumber } from '../../domain/value-objects/phone.vo';
 
 export class CreateCustomerDto {
   @ApiProperty({
@@ -31,12 +32,10 @@ export class CreateCustomerDto {
 
   @ApiProperty({
     description: 'The phone number of the customer',
-    example: '+1234567890',
+    example: '+989123456789',
   })
   @IsString()
-  @Matches(/^\+?[1-9]\d{1,14}$/, {
-    message: 'Phone must be a valid E.164 number',
-  })
+  @Validate(PhoneNumber)
   phoneNumber: string;
 
   @ApiProperty({
