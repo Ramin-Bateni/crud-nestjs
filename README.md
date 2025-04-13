@@ -1,3 +1,12 @@
+```
+ ██████ ██████  ██    ██ ██████      ████████ ███████ ███████ ████████     ███    ██ ███████ ███████ ████████      ██ ███████ 
+██      ██   ██ ██    ██ ██   ██        ██    ██      ██         ██        ████   ██ ██      ██         ██         ██ ██      
+██      ██████  ██    ██ ██   ██        ██    █████   ███████    ██        ██ ██  ██ █████   ███████    ██         ██ ███████ 
+██      ██   ██ ██    ██ ██   ██        ██    ██           ██    ██        ██  ██ ██ ██           ██    ██    ██   ██      ██ 
+ ██████ ██   ██  ██████  ██████         ██    ███████ ███████    ██        ██   ████ ███████ ███████    ██     █████  ███████ 
+      
+```
+
 # CRUD Test NestJS
 
 <p align="center">
@@ -35,9 +44,17 @@ The project is organized using a clean architecture pattern with the following s
 src/
 ├── customer/
 │   ├── domain/         # Business entities and rules
+│   │   ├── models/
+│   │   │   └── entities/
+│   │   │       └── customer.entity.ts
 │   ├── application/    # Use cases and business logic
 │   ├── infrastructure/ # Database implementations, repositories
+│   │   └── module/
+│   │       └── customer.module.ts
 │   └── presentation/   # Controllers, DTOs, and API endpoints
+├── common/
+│   └── schema/
+│       └── base.schema.ts
 ├── app.module.ts       # Root module configuration
 └── main.ts            # Application entry point
 ```
@@ -48,11 +65,24 @@ src/
 - Clean architecture implementation
 - TypeScript-based development
 - Modular and maintainable code structure
+- MongoDB integration with environment-based configuration
+- Base schema implementation for common fields
+
+## Customer Entity
+
+The application includes a Customer entity with the following fields:
+- FirstName (string)
+- LastName (string)
+- DateOfBirth (Date)
+- PhoneNumber (string)
+- Email (string, unique)
+- BankAccountNumber (string)
 
 ## Prerequisites
 
 - Node.js (v16 or higher)
 - npm (v7 or higher)
+- MongoDB (v4.4 or higher)
 
 ## Environment Variables
 
@@ -119,6 +149,8 @@ This project uses:
 - TypeScript
 - Jest for testing
 - ESLint and Prettier for code formatting
+- @typegoose/typegoose for MongoDB schema definitions
+- @nestjs/swagger for API documentation
 
 ## Deployment
 
