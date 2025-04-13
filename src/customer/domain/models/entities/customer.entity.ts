@@ -2,7 +2,7 @@ import { buildSchema, Prop } from '@typegoose/typegoose';
 import { Document } from 'mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { BaseSchema } from 'src/common/schema/base.schema';
-import { IsValidPhoneNumber } from 'src/common/validators/phone.validator';
+import { IsValidPhoneNumber, IsValidEmail, IsValidBankAccount } from 'src/common/validators';
 
 export class Customer extends BaseSchema {
   @Prop({ type: String, required: true })
@@ -24,10 +24,12 @@ export class Customer extends BaseSchema {
 
   @Prop({ type: String, required: true, unique: true })
   @ApiProperty({ type: String, required: true })
+  @IsValidEmail()
   email: string;
 
   @Prop({ type: String, required: true })
   @ApiProperty({ type: String, required: true })
+  @IsValidBankAccount()
   bankAccountNumber: string;
 
   constructor(data?: Partial<Customer>) {
