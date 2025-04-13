@@ -67,16 +67,55 @@ src/
 - Modular and maintainable code structure
 - MongoDB integration with environment-based configuration
 - Base schema implementation for common fields
+- Phone number validation using Google's libphonenumber
+- Input validation using class-validator
 
 ## Customer Entity
 
 The application includes a Customer entity with the following fields:
-- FirstName (string)
-- LastName (string)
-- DateOfBirth (Date)
-- PhoneNumber (string)
-- Email (string, unique)
-- BankAccountNumber (string)
+
+```typescript
+export class Customer extends BaseSchema {
+  @Prop({ type: String, required: true })
+  @ApiProperty({ type: String, required: true })
+  firstName: string;
+
+  @Prop({ type: String, required: true })
+  @ApiProperty({ type: String, required: true })
+  lastName: string;
+
+  @Prop({ type: Date, required: true })
+  @ApiProperty({ type: Date, required: true })
+  dateOfBirth: Date;
+
+  @Prop({ type: String, required: true })
+  @ApiProperty({ type: String, required: true })
+  @IsValidPhoneNumber()
+  phoneNumber: string;
+
+  @Prop({ type: String, required: true, unique: true })
+  @ApiProperty({ type: String, required: true })
+  email: string;
+
+  @Prop({ type: String, required: true })
+  @ApiProperty({ type: String, required: true })
+  bankAccountNumber: string;
+}
+```
+
+### Phone Number Validation
+
+The application includes a custom validator for phone numbers using Google's libphonenumber library. The validator:
+
+- Ensures the phone number is in a valid format
+- Verifies that the number is a mobile number (not a landline)
+- Supports international phone number formats
+- Returns clear error messages for invalid numbers
+
+Example of valid mobile numbers:
+- +1 650-253-0000 (US)
+- +44 7911 123456 (UK)
+- +98 912 123 4567 (Iran)
 
 ## Prerequisites
 
