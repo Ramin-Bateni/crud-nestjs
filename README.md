@@ -1,3 +1,5 @@
+# CRUD Test NestJS
+
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
 </p>
@@ -23,39 +25,79 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+This is a CRUD (Create, Read, Update, Delete) test application built with NestJS framework. The project follows a clean architecture approach with separate layers for domain, application, infrastructure, and presentation concerns.
 
-## Project setup
+## Project Structure
+
+The project is organized using a clean architecture pattern with the following structure:
+
+```
+src/
+├── customer/
+│   ├── domain/         # Business entities and rules
+│   ├── application/    # Use cases and business logic
+│   ├── infrastructure/ # Database implementations, repositories
+│   └── presentation/   # Controllers, DTOs, and API endpoints
+├── app.module.ts       # Root module configuration
+└── main.ts            # Application entry point
+```
+
+## Features
+
+- Customer management system with CRUD operations
+- Clean architecture implementation
+- TypeScript-based development
+- Modular and maintainable code structure
+
+## Prerequisites
+
+- Node.js (v16 or higher)
+- npm (v7 or higher)
+
+## Installation
 
 ```bash
+# Clone the repository
+$ git clone [repository-url]
+
+# Install dependencies
 $ npm install
 ```
 
-## Compile and run the project
+## Running the application
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
+# Development mode
 $ npm run start:dev
 
-# production mode
+# Production mode
 $ npm run start:prod
 ```
 
-## Run tests
+## Test
 
 ```bash
-# unit tests
+# Unit tests
 $ npm run test
 
 # e2e tests
 $ npm run test:e2e
 
-# test coverage
+# Test coverage
 $ npm run test:cov
 ```
+
+## API Documentation
+
+The API documentation will be available at `http://localhost:3000/api` when the application is running.
+
+## Development
+
+This project uses:
+- NestJS v11
+- TypeScript
+- Jest for testing
+- ESLint and Prettier for code formatting
 
 ## Deployment
 
@@ -95,4 +137,4 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 
 ## License
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+This project is [MIT licensed](LICENSE).
