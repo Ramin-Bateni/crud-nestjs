@@ -103,6 +103,12 @@ export class Customer extends BaseSchema {
 }
 ```
 
+### Unique Constraints
+
+The Customer entity has the following unique constraints:
+- Email address must be unique
+- The combination of First Name, Last Name, and Date of Birth must be unique (no duplicate customers with the same name and birth date)
+
 ### Phone Number Validation
 
 The application includes a custom validator for phone numbers using Google's libphonenumber library. The validator:

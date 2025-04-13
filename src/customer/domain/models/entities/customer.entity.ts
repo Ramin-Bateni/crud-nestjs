@@ -38,4 +38,14 @@ export class Customer extends BaseSchema {
 }
 
 export type CustomerDocument = Customer & Document;
-export const CustomerSchema = buildSchema(Customer); 
+export const CustomerSchema = buildSchema(Customer, {
+  schemaOptions: {
+    timestamps: true,
+    indexes: [
+      {
+        fields: { firstName: 1, lastName: 1, dateOfBirth: 1 },
+        unique: true,
+      },
+    ],
+  } as any,
+}); 
