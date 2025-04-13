@@ -11,7 +11,6 @@ export class CustomerController {
   constructor(private readonly commandBus: CommandBus) {}
 
   @Post()
-  // @UsePipes(new ValidationPipe({ whitelist: true }))
   @ApiResponse({ status: 201, description: 'Customer created successfully' })
   @ApiBadRequestResponse({
     description: 'Validation failed or duplicate entry',

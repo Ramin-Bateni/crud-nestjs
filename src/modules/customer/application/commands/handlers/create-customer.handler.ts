@@ -1,10 +1,10 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { CreateCustomerCommand } from '../create-customer.command';
-import { ICustomerRepository } from 'src/modules/customer/domain/repositories/customer.repository.interface';
-import { Email } from 'src/modules/customer/domain/value-objects/email.vo';
-import { PhoneNumber } from 'src/modules/customer/domain/value-objects/phone.vo';
-import { BankAccountNumber } from 'src/modules/customer/domain/value-objects/bank-account.vo';
-import { Customer } from 'src/modules/customer/domain/entities/customer.entity';
+import { ICustomerRepository } from '../../../domain/repositories/customer.repository.interface';
+import { Email } from '../../../domain/value-objects/email.vo';
+import { PhoneNumber } from '../../../domain/value-objects/phone.vo';
+import { BankAccountNumber } from '../../../domain/value-objects/bank-account.vo';
+import { Customer } from '../../../domain/entities/customer.entity';
 import { v4 as uuidv4 } from 'uuid';
 import { Inject } from '@nestjs/common';
 
