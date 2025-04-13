@@ -13,33 +13,33 @@ export class CustomerRepository implements ICustomerRepository {
     private readonly repo: Repository<CustomerOrmEntity>,
   ) {}
 
-  async create(customer: Customer): Promise<Customer> {
+  async create(customer: Customer): Promise<CustomerOrmEntity> {
     const ormCustomer = this.toOrmEntity(customer);
     const saved = await this.repo.save(ormCustomer);
-    return this.toDomainEntity(saved);
+    return saved;
   }
 
-  async findByEmail(email: string): Promise<Customer | null> {
+  async findByEmail(email: string): Promise<CustomerOrmEntity | null> {
     const customer = await this.repo.findOneBy({ email });
-    return customer ? this.toDomainEntity(customer) : null;
+    return customer;
   }
 
   async findByIdentity(
     firstName: string,
     lastName: string,
     dob: Date,
-  ): Promise<Customer | null> {
+  ): Promise<CustomerOrmEntity | null> {
     const customer = await this.repo.findOneBy({
       firstName,
       lastName,
       dateOfBirth: dob,
     });
-    return customer ? this.toDomainEntity(customer) : null;
+    return customer;
   }
 
-  async findAll(): Promise<Customer[]> {
+  async findAll(): Promise<CustomerOrmEntity[]> {
     const customers = await this.repo.find();
-    return customers.map((customer) => this.toDomainEntity(customer));
+    return customers;
   }
 
   //  Mapping function
