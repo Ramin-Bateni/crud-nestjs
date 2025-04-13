@@ -62,12 +62,18 @@ The application uses environment variables for configuration. Create a `.env` fi
 # Server Configuration
 PORT=3000
 NODE_ENV=development
+
+# MongoDB Configuration
+MONGODB_URI=mongodb://localhost:27017/nestjs_db
+MONGODB_USERNAME=
+MONGODB_PASSWORD=
 ```
 
 Make sure to:
 - Never commit the `.env` file to version control
 - Use different values for different environments (development, staging, production)
 - Keep sensitive information secure
+- Update the MongoDB URI with your actual MongoDB connection string
 
 ## Installation
 
