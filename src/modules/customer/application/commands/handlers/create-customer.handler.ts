@@ -6,12 +6,16 @@ import { PhoneNumber } from 'src/modules/customer/domain/value-objects/phone.vo'
 import { BankAccountNumber } from 'src/modules/customer/domain/value-objects/bank-account.vo';
 import { Customer } from 'src/modules/customer/domain/entities/customer.entity';
 import { v4 as uuidv4 } from 'uuid';
+import { Inject } from '@nestjs/common';
 
 @CommandHandler(CreateCustomerCommand)
 export class CreateCustomerHandler
   implements ICommandHandler<CreateCustomerCommand>
 {
-  constructor(private readonly repository: ICustomerRepository) {}
+  constructor(
+    @Inject('ICustomerRepository')
+    private readonly repository: ICustomerRepository,
+  ) {}
 
   async execute(command: CreateCustomerCommand): Promise<Customer> {
     const {
