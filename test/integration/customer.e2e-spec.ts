@@ -30,7 +30,7 @@ describe('CustomerController (e2e)', () => {
       firstName: 'Alice',
       lastName: 'Smith',
       dateOfBirth: '1991-12-12',
-      phoneNumber: '+19876543210',
+      phoneNumber: '+989123456789',
       email: 'alice@example.com',
       bankAccountNumber: '1234567890',
     };
@@ -60,7 +60,7 @@ describe('CustomerController (e2e)', () => {
     const response = await request(app.getHttpServer())
       .post('/customers')
       .send(dto)
-      .expect(500);
+      .expect(409);
 
     expect((response.body as { message: string }).message).toContain(
       'Email already exists',
