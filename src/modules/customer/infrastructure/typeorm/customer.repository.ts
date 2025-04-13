@@ -53,6 +53,10 @@ export class CustomerRepository implements ICustomerRepository {
     return customers;
   }
 
+  async delete(id: string): Promise<void> {
+    await this.repo.delete(id);
+  }
+
   //  Mapping function
   private toOrmEntity(customer: Customer): CustomerOrmEntity {
     return {

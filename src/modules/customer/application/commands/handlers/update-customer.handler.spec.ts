@@ -23,6 +23,7 @@ const mockRepo = {
     Promise.resolve({} as CustomerOrmEntity),
   ),
   findAll: jest.fn<Promise<CustomerOrmEntity[]>, []>(() => Promise.resolve([])),
+  delete: jest.fn<Promise<void>, [string]>(() => Promise.resolve()),
 } as jest.Mocked<ICustomerRepository>;
 
 describe('UpdateCustomerHandler', () => {

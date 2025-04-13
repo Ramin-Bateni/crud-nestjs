@@ -12,4 +12,5 @@ export interface ICustomerRepository {
     dob: Date,
   ): Promise<CustomerOrmEntity | null>;
   findAll(): Promise<CustomerOrmEntity[]>;
+  delete(id: string): Promise<void>;
 }
