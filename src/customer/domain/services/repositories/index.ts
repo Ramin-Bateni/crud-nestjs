@@ -1,0 +1,1 @@
+export { CustomerMongoRepository } from './customer-mongo.repository';
