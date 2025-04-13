@@ -10,6 +10,9 @@ const mockRepo = {
   create: jest.fn<Promise<CustomerOrmEntity>, [Customer]>(() =>
     Promise.resolve({} as CustomerOrmEntity),
   ),
+  findById: jest.fn<Promise<CustomerOrmEntity | null>, [string]>(() =>
+    Promise.resolve(null),
+  ),
   findByEmail: jest.fn<Promise<CustomerOrmEntity | null>, [string]>(() =>
     Promise.resolve(null),
   ),
@@ -17,6 +20,9 @@ const mockRepo = {
     Promise<CustomerOrmEntity | null>,
     [string, string, Date]
   >(() => Promise.resolve(null)),
+  update: jest.fn<Promise<CustomerOrmEntity>, [string, Customer]>(() =>
+    Promise.resolve({} as CustomerOrmEntity),
+  ),
   findAll: jest.fn<Promise<CustomerOrmEntity[]>, []>(() => Promise.resolve([])),
 } as jest.Mocked<ICustomerRepository>;
 

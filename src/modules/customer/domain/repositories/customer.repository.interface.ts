@@ -4,6 +4,8 @@ import { Customer } from '../entities/customer.entity';
 export interface ICustomerRepository {
   create(customer: Customer): Promise<CustomerOrmEntity>;
   findByEmail(email: string): Promise<CustomerOrmEntity | null>;
+  findById(id: string): Promise<CustomerOrmEntity | null>;
+  update(id: string, customer: Customer): Promise<CustomerOrmEntity>;
   findByIdentity(
     firstName: string,
     lastName: string,

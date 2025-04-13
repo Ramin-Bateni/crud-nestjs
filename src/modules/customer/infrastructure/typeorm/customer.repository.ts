@@ -37,6 +37,17 @@ export class CustomerRepository implements ICustomerRepository {
     return customer;
   }
 
+  async findById(id: string): Promise<CustomerOrmEntity | null> {
+    const customer = await this.repo.findOneBy({ id });
+    return customer;
+  }
+
+  async update(id: string, customer: Customer): Promise<CustomerOrmEntity> {
+    const ormCustomer = this.toOrmEntity(customer);
+    await this.repo.update(id, ormCustomer);
+    return this.repo.findOneByOrFail({ id });
+  }
+
   async findAll(): Promise<CustomerOrmEntity[]> {
     const customers = await this.repo.find();
     return customers;
