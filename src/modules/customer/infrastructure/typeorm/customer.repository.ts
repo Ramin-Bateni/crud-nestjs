@@ -3,26 +3,67 @@ import { Customer } from '../../domain/entities/customer.entity';
 import { CustomerOrmEntity } from './customer.orm-entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Email } from '../../domain/value-objects/email.vo';
+import { PhoneNumber } from '../../domain/value-objects/phone.vo';
+import { BankAccountNumber } from '../../domain/value-objects/bank-account.vo';
 
 export class CustomerRepository implements ICustomerRepository {
   constructor(
     @InjectRepository(CustomerOrmEntity)
     private readonly repo: Repository<CustomerOrmEntity>,
   ) {}
-  create(customer: Customer): Promise<Customer> {
-    throw new Error('Method not implemented.');
+
+  async create(customer: Customer): Promise<Customer> {
+    const ormCustomer = this.toOrmEntity(customer);
+    const saved = await this.repo.save(ormCustomer);
+    return this.toDomainEntity(saved);
   }
-  findByEmail(email: string): Promise<Customer | null> {
-    throw new Error('Method not implemented.');
+
+  async findByEmail(email: string): Promise<Customer | null> {
+    const customer = await this.repo.findOneBy({ email });
+    return customer ? this.toDomainEntity(customer) : null;
   }
-  findByIdentity(
+
+  async findByIdentity(
     firstName: string,
     lastName: string,
     dob: Date,
   ): Promise<Customer | null> {
-    throw new Error('Method not implemented.');
+    const customer = await this.repo.findOneBy({
+      firstName,
+      lastName,
+      dateOfBirth: dob,
+    });
+    return customer ? this.toDomainEntity(customer) : null;
   }
-  findAll(): Promise<Customer[]> {
-    throw new Error('Method not implemented.');
+
+  async findAll(): Promise<Customer[]> {
+    const customers = await this.repo.find();
+    return customers.map((customer) => this.toDomainEntity(customer));
+  }
+
+  //  Mapping function
+  private toOrmEntity(customer: Customer): CustomerOrmEntity {
+    return {
+      id: customer.id,
+      firstName: customer.firstName,
+      lastName: customer.lastName,
+      dateOfBirth: customer.dateOfBirth,
+      phoneNumber: customer.phoneNumber.getValue(),
+      email: customer.email.getValue(),
+      bankAccountNumber: customer.bankAccountNumber.getValue(),
+    };
+  }
+
+  private toDomainEntity(entity: CustomerOrmEntity): Customer {
+    return new Customer(
+      entity.id,
+      entity.firstName,
+      entity.lastName,
+      entity.dateOfBirth,
+      new Email(entity.email),
+      new PhoneNumber(entity.phoneNumber),
+      new BankAccountNumber(entity.bankAccountNumber),
+    );
   }
 }
