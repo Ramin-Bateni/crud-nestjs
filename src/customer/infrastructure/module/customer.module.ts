@@ -1,9 +1,9 @@
 import { Global, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Customer, CustomerSchema } from 'src/customer/domain/models/entities';
+import { Customer, CustomerSchema } from '@/customer/domain/models/entities';
 import { ConfigModule } from '@nestjs/config';
-import { CustomerMongoRepository } from 'src/customer/domain/services/repositories';
-import { CustomerMongoFactory } from 'src/customer/domain/services/factories';
+import { CustomerMongoRepository } from '@/customer/domain/services/repositories';
+import { CustomerMongoFactory } from '@/customer/domain/services/factories';
 
 @Global()
 @Module({

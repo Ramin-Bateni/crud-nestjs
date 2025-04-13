@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Customer, CustomerDocument } from '../../models/entities';
-import { BaseMongoFactory } from 'src/common/factories';
+import { BaseMongoFactory } from '@/common/factories';
 
 @Injectable()
 export class CustomerMongoFactory extends BaseMongoFactory<CustomerDocument> {

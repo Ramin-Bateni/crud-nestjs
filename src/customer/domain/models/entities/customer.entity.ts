@@ -1,8 +1,8 @@
 import { buildSchema, Prop } from '@typegoose/typegoose';
 import { Document } from 'mongoose';
 import { ApiProperty } from '@nestjs/swagger';
-import { BaseSchema } from 'src/common/schema/base.schema';
-import { IsValidPhoneNumber, IsValidEmail, IsValidBankAccount } from 'src/common/validators';
+import { BaseSchema } from '@/common/schema/base.schema';
+import { IsValidPhoneNumber, IsValidEmail, IsValidBankAccount } from '@/common/validators';
 
 export class Customer extends BaseSchema {
   @Prop({ type: String, required: true, maxlength: 50 })
@@ -34,6 +34,14 @@ export class Customer extends BaseSchema {
 
   constructor(data?: Partial<Customer>) {
     super(data);
+    if (data) {
+      this.firstName = data.firstName!;
+      this.lastName = data.lastName!;
+      this.dateOfBirth = data.dateOfBirth!;
+      this.phoneNumber = data.phoneNumber!;
+      this.email = data.email!;
+      this.bankAccountNumber = data.bankAccountNumber!;
+    }
   }
 }
 
