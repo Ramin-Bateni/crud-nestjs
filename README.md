@@ -106,7 +106,7 @@ export class Customer extends BaseSchema {
 ### Unique Constraints
 
 The Customer entity has the following unique constraints:
-- Email address must be unique
+- Email address must be unique (enforced at the database level)
 - The combination of First Name, Last Name, and Date of Birth must be unique (no duplicate customers with the same name and birth date)
 
 ### Phone Number Validation
