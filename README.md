@@ -36,6 +36,20 @@
 
 This is a CRUD (Create, Read, Update, Delete) test application built with NestJS framework. The project follows a clean architecture approach with separate layers for domain, application, infrastructure, and presentation concerns.
 
+## API Documentation
+
+The API documentation is available through Swagger UI. Once the application is running, you can access the documentation at:
+
+```
+http://localhost:3000/api/docs
+```
+
+The Swagger documentation provides:
+- Interactive API documentation
+- Request/response schemas
+- Authentication information
+- API endpoints testing interface
+
 ## Project Structure
 
 The project is organized using a clean architecture pattern with the following structure:
@@ -69,6 +83,7 @@ src/
 - Base schema implementation for common fields
 - Phone number validation using Google's libphonenumber
 - Input validation using class-validator
+- Swagger API documentation
 
 ## Customer Entity
 
@@ -179,6 +194,7 @@ $ docker-compose logs -f
 
 The services will be available at:
 - NestJS application: http://localhost:3000
+- Swagger documentation: http://localhost:3000/api
 - MongoDB: mongodb://localhost:27017
 
 ### Environment Variables in Docker
@@ -205,6 +221,13 @@ NODE_ENV=development
 MONGODB_URI=mongodb://localhost:27017/nestjs_db
 MONGODB_USERNAME=
 MONGODB_PASSWORD=
+DATABASE_NAME=nestjs_db
+
+# Swagger Configuration
+SWAGGER_TITLE=NestJS CRUD API
+SWAGGER_DESCRIPTION=The NestJS CRUD API documentation
+SWAGGER_VERSION=1.0
+SWAGGER_PATH=api
 ```
 
 Make sure to:
@@ -247,14 +270,7 @@ $ npm run test
 
 # e2e tests
 $ npm run test:e2e
-
-# Test coverage
-$ npm run test:cov
 ```
-
-## API Documentation
-
-The API documentation will be available at `http://localhost:3000/api` when the application is running.
 
 ## Development
 
