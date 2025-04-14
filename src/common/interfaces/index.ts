@@ -5,3 +5,8 @@ export {
     TextMessageInterface,
     CodeMessageInterface,
 } from './message.interface';
+export {
+    CursorPaginationRequestInterface,
+    LimitOffsetPaginationRequestInterface,
+    PageSizePaginationRequestInterface,
+} from './pagination.interface';

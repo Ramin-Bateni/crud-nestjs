@@ -58,5 +58,15 @@
             "developer": "Customer get process successfully.",
             "client": "Customer get process successfully."
         }
+    },
+    "GET_PAGINATION_SUCCESSFULLY": {
+        "code": {
+            "enum": "GET_PAGINATION_SUCCESSFULLY",
+            "number": 10200
+        },
+        "text": {
+            "developer": "Get pagination process successfully.",
+            "client": "Get pagination process successfully."
+        }
     }   
 }

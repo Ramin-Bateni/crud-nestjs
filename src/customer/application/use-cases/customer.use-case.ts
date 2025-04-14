@@ -6,6 +6,9 @@ import { CustomerCreateCommand } from '../services/commands/customer-create/cust
 import { CustomerUpdateCommand } from '../services/commands/customer-update/customer-update.handler';
 import { LocalizationMessage } from '@/customer/infrastructure/localization';
 import { CustomerGetQuery } from '../services/queries/customer-get/customer-get.handler';
+import { CustomerListQuery } from '../services/queries/customer-list/customer-list.handler';
+import { PageSizePaginationDto } from '@/common/pagination';
+import { GetCustomersResponseDto } from '@/customer/presentation/dto/get-customers.dto';
 
 @Injectable()
 export class CustomerUseCase {
@@ -88,6 +91,33 @@ export class CustomerUseCase {
       );
       return {
         data: null,
+        meta: errorMessage,
+      };
+    }
+  }
+
+  public async CustomerList(paginationDto: PageSizePaginationDto, lang: string): Promise<GetCustomersResponseDto> {
+    try {
+      const result = await this.queryBus.execute(new CustomerListQuery(paginationDto, lang));
+
+      return {
+        data: result.data,
+        meta: {
+          ...localization.message(LocalizationMessage.GET_PAGINATION_SUCCESSFULLY, { lang }),
+          pagination: result.pagination,
+        },
+      };
+    } catch (error) {
+      if (error?.response?.meta) throw error;
+      const errorMessage = localization.message(
+        LocalizationMessage.INTERNAL_SERVER_ERROR,
+        { lang },
+        true,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+        error,
+      );
+      return {
+        data: [],
         meta: errorMessage,
       };
     }
