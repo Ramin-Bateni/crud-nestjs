@@ -1,4 +1,5 @@
 import { registerDecorator, ValidationOptions, ValidationArguments } from 'class-validator';
+import { isValidIBAN } from 'ibantools';
 
 export function IsValidBankAccount(validationOptions?: ValidationOptions) {
   return function (object: Object, propertyName: string) {
@@ -9,13 +10,10 @@ export function IsValidBankAccount(validationOptions?: ValidationOptions) {
       options: validationOptions,
       validator: {
         validate(value: any, args: ValidationArguments) {
-          // Basic validation for bank account number
-          // This can be customized based on specific bank account number formats
-          const bankAccountRegex = /^[0-9]{8,17}$/;
-          return typeof value === 'string' && bankAccountRegex.test(value);
+          return typeof value === 'string' && isValidIBAN(value);
         },
         defaultMessage(args: ValidationArguments) {
-          return 'Please provide a valid bank account number (8-17 digits)';
+          return 'Please provide a valid IBAN';
         },
       },
     });

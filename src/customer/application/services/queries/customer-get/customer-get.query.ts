@@ -1,6 +1,6 @@
 import { QueryHandler, IQueryHandler } from '@nestjs/cqrs';
 import { CustomerMongoRepository } from '../../../../domain/services/repositories';
-import { localization, Validation } from 'src/common';
+import { localization, Validation } from '@common';
 import { CustomerGetQuery } from './customer-get.handler';
 import { GetCustomerResponseInterface } from '@/customer/application/interfaces';
 import { GetCustomerMap } from '@/customer/application/map';

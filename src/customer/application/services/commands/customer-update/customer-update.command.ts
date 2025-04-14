@@ -1,6 +1,6 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { CustomerMongoRepository } from '../../../../domain/services/repositories';
-import { localization, Validation } from 'src/common';
+import { localization, Validation } from '@common';
 import { CustomerUpdateCommand } from './customer-update.handler';
 import { NewCustomerCreateInterface } from '@/customer/application/interfaces';
 import { GetCustomerMap } from '@/customer/application/map';

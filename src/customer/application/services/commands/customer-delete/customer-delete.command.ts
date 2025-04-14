@@ -1,6 +1,6 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { CustomerMongoRepository } from '../../../../domain/services/repositories';
-import { localization, Validation } from 'src/common';
+import { localization, Validation } from '@common';
 import { CustomerDeleteCommand } from './customer-delete.handler';
 import { LocalizationMessage } from '@/customer/infrastructure/localization';
 import { HttpStatus } from '@nestjs/common';
