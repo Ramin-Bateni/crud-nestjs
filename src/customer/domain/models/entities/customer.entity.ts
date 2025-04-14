@@ -17,7 +17,7 @@ export class Customer extends BaseSchema {
   @ApiProperty({ type: Date, required: true })
   dateOfBirth: Date;
 
-  @Prop({ type: String, required: true, match: /^\d+$/, maxlength: 15 })
+  @Prop({ type: String, required: true, match: /^\+?[0-9]+$/, maxlength: 15 })
   @ApiProperty({ type: String, required: true, maxLength: 15 })
   @IsValidPhoneNumber()
   phoneNumber: string;

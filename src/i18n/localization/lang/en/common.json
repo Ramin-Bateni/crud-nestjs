@@ -1,0 +1,74 @@
+{   
+    "SERVICE_UNAVAILABLE_ERROR": { 
+        "code": {
+            "enum": "SERVICE_UNAVAILABLE_ERROR", 
+            "number": 10503
+        },
+        "text": {
+            "developer": "The service is currently unavailable. Please try again later.", 
+            "client": "Server error!"
+        }
+    },
+    "UNAUTHORIZED": { 
+        "code": {
+            "enum": "UNAUTHORIZED", 
+            "number": 10401
+        },
+        "text": {
+            "developer": "Access unauthorized. Please provide a valid token. Your current token may have expired or is not valid for this request.", 
+            "client": "Unauthorized access"
+        }
+    },
+    "FORBIDDEN_RESOURCE_ERROR": { 
+        "code": {
+            "enum": "FORBIDDEN_RESOURCE_ERROR", 
+            "number": 10403
+        },
+        "text": {
+            "developer": "Permission denied. You do not have the required access rights.", 
+            "client": "Permission denied"
+        }
+    },
+    "INTERNAL_SERVER_ERROR": { 
+        "code": {
+            "enum": "INTERNAL_SERVER_ERROR", 
+            "number": 10500
+        },
+        "text": {
+            "developer": "An internal server error occurred. Please contact support for assistance.", 
+            "client": "Server error!"
+        }
+    },
+    "VALIDATE": {
+        "OBJECT_ID": {
+            "code": {
+                "enum": "VALIDATE.OBJECT_ID", 
+                "number": 10400
+            },
+            "text": {
+                "developer": "Object id not valid.", 
+                "client": "Object id not valid."
+            }
+        }
+    },
+    "TOO_MANY_REQUEST_ERROR": { 
+        "code": {
+            "enum": "TOO_MANY_REQUEST_ERROR", 
+            "number": 10429
+        },
+        "text": {
+            "developer": "Too many requests. you are send a lot of request for server, your banned temporarily.", 
+            "client": "Too many attempts, please try again later."
+        }
+    },
+    "GET_PAGINATION_SUCCESSFULLY": {
+        "code": {
+            "enum": "GET_PAGINATION_SUCCESSFULLY", 
+            "number": 10200
+        },
+        "text": {
+            "developer": "Get list of items process successfully.", 
+            "client": "Get list of items process successfully."
+        }
+    } 
+}

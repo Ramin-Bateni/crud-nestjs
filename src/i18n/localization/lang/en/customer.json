@@ -1,0 +1,32 @@
+{   
+    "CUSTOMER_CREATE_SUCCESSFULLY": {
+        "code": {
+            "enum": "CUSTOMER_CREATE_SUCCESSFULLY", 
+            "number": 10201
+        },
+        "text": {
+            "developer": "Create customer process successfully.", 
+            "client": "Create customer process successfully."
+        }
+    },
+    "CUSTOMER_ALREADY_EXISTS": {
+        "code": {
+            "enum": "CUSTOMER_ALREADY_EXISTS", 
+            "number": 10400
+        },
+        "text": {
+            "developer": "Customer already exists.", 
+            "client": "Customer already exists."
+        }
+    },
+    "CUSTOMER_EMAIL_ALREADY_EXISTS": {
+        "code": {
+            "enum": "CUSTOMER_EMAIL_ALREADY_EXISTS", 
+            "number": 10400
+        },
+        "text": {
+            "developer": "Customer email already exists.", 
+            "client": "Customer email already exists."
+        }
+    }
+}
