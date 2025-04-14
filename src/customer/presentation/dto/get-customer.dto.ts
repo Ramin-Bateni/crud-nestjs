@@ -2,7 +2,14 @@ import { IsString, IsEmail, IsDateString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { MetaDto } from '@/common';
 
-export class GetCustomerUpdateRequestDto {
+export class GetCustomerDto {
+  @ApiProperty({ 
+    type: String,
+    example: '67fd14a483d1b6e718a5eb87',
+    description: 'Customer unique identifier'
+  })
+  id: string;
+  
   @ApiProperty({ 
     type: String,
     example: 'John',
@@ -58,30 +65,11 @@ export class GetCustomerUpdateRequestDto {
   dateOfBirth!: Date;
 }
 
-export class GetCustomerId {
-  @ApiProperty({ 
-    type: String,
-    example: '67fd14a483d1b6e718a5eb87',
-    description: 'Customer unique identifier'
-  })
-  @IsString()
-  customerId: string;
-}
-
-export class GetCustomerUpdateDto extends GetCustomerUpdateRequestDto {
-  @ApiProperty({ 
-    type: String,
-    example: '67fd14a483d1b6e718a5eb87',
-    description: 'Customer unique identifier'
-  })
-  id: string;
-}
-
-export class GetCustomerUpdateResponseDto {
+export class GetCustomerResponseDto {
   @ApiProperty({
-    type: GetCustomerUpdateDto,
+    type: GetCustomerDto,
   })
-  data!: GetCustomerUpdateDto | null;
+  data!: GetCustomerDto | null;
 
   @ApiProperty({
     type: MetaDto,

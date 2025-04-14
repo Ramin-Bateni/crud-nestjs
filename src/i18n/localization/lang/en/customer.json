@@ -48,5 +48,15 @@
             "developer": "Customer not found.",
             "client": "Customer not found."
         }      
-    }
+    },
+    "CUSTOMER_GET_SUCCESSFULLY": {
+        "code": {
+            "enum": "CUSTOMER_GET_SUCCESSFULLY",
+            "number": 10200
+        },
+        "text": {
+            "developer": "Customer get process successfully.",
+            "client": "Customer get process successfully."
+        }
+    }   
 }

@@ -7,6 +7,7 @@ import { CustomerMongoFactory } from '@/customer/domain/services/factories';
 import { CustomerUseCase } from '@/customer/application/use-cases/customer.use-case';
 import { V1CustomerController } from '@/customer/presentation/controllers/v1';
 import { CommandHandlers } from '@/customer/application/services/commands';
+import { QueryHandlers } from '@/customer/application/services/queries';
 import { CqrsModule } from '@nestjs/cqrs';
 import { CustomerValidator } from '@/common/validators/customer.validator';
 
@@ -25,8 +26,9 @@ import { CustomerValidator } from '@/common/validators/customer.validator';
     CustomerMongoFactory,
     // Use Case
     CustomerUseCase,
-    // Handler
+    // Handlers
     ...CommandHandlers,
+    ...QueryHandlers,
     // Validator
     CustomerValidator,
   ],

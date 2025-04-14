@@ -20,10 +20,14 @@ export class CustomerUpdateHandler implements ICommandHandler<CustomerUpdateComm
     const lang = command.lang;
     const customerId = command.customerId;
 
-    if (!Validation.IsMongoId(customerId)) {
-      throw {
-        ...localization.message(LocalizationMessage.VALIDATE_OBJECT_ID, { lang }, true, HttpStatus.BAD_REQUEST),
-      };
+    try {
+      if (!Validation.IsMongoId(customerId)) {
+        throw {
+          ...localization.message(LocalizationMessage.VALIDATE_OBJECT_ID, { lang }, true, HttpStatus.BAD_REQUEST),
+        };
+      }
+    } catch (error) {
+      if (error?.response?.meta) throw error;
     }
 
     const existingCustomer = await this.customerMongoRepository.FindOne({
