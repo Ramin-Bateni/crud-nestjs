@@ -61,11 +61,11 @@ src/
 │   │   ├── models/
 │   │   │   └── entities/
 │   │   │       └── customer.entity.ts
-│   ├── application/    # Use cases and business logic
-│   ├── infrastructure/ # Database implementations, repositories
-│   │   └── module/
-│   │       └── customer.module.ts
-│   └── presentation/   # Controllers, DTOs, and API endpoints
+│   │   ├── application/    # Use cases and business logic
+│   │   ├── infrastructure/ # Database implementations, repositories
+│   │   │   └── module/
+│   │   │       └── customer.module.ts
+│   │   └── presentation/   # Controllers, DTOs, and API endpoints
 ├── common/
 │   └── schema/
 │       └── base.schema.ts
@@ -248,6 +248,25 @@ $ npm install
 # OR using Docker
 $ docker-compose up --build
 ```
+
+## Environment Setup
+
+1. Copy the sample environment file:
+```bash
+$ cp sample.env .env
+```
+
+2. Update the `.env` file with your specific configuration:
+   - For local development, you can use the default values
+   - For production, update the MongoDB credentials and other sensitive information
+   - Make sure to never commit the `.env` file to version control
+
+3. The `sample.env` file contains all the necessary environment variables with example values:
+   - Server configuration (PORT, NODE_ENV)
+   - MongoDB configuration (URI, credentials, database name)
+   - Swagger documentation settings
+
+4. For Docker deployment, the environment variables are automatically configured in the `docker-compose.yml` file.
 
 ## Running the application
 
