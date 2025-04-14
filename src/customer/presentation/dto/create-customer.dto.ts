@@ -61,7 +61,7 @@ export class CustomerCreateDto {
 export class NewCustomerDto extends CustomerCreateDto {
   @ApiProperty({ 
     type: String,
-    example: '123e4567e89b12d3a456426614174000',
+    example: '67fd14a483d1b6e718a5eb87',
     description: 'Customer unique identifier'
   })
   id: string;

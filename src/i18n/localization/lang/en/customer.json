@@ -28,5 +28,25 @@
             "developer": "Customer email already exists.", 
             "client": "Customer email already exists."
         }
+    },
+    "CUSTOMER_UPDATE_SUCCESSFULLY": {
+        "code": {
+            "enum": "CUSTOMER_UPDATE_SUCCESSFULLY",
+            "number": 10201
+        },
+        "text": {
+            "developer": "Customer update process successfully.",
+            "client": "Customer update process successfully."
+        }
+    },
+    "CUSTOMER_NOT_FOUND": {
+        "code": {
+            "enum": "CUSTOMER_NOT_FOUND",
+            "number": 10400
+        },
+        "text": {
+            "developer": "Customer not found.",
+            "client": "Customer not found."
+        }      
     }
 }
