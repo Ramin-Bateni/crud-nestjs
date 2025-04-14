@@ -1,14 +1,16 @@
 import { Injectable, HttpStatus } from '@nestjs/common';
-import { CustomerCreateInterface, NewCustomerCreateResponseInterface, NewCustomerCreateInterface, GetCustomerUpdateInterface, GetCustomerUpdateResponseInterface } from '../interfaces';
+import { CustomerCreateInterface, NewCustomerCreateResponseInterface, GetCustomerUpdateInterface, GetCustomerUpdateResponseInterface } from '../interfaces';
 import { localization } from '@/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { CustomerCreateCommand } from '../services/commands/customer-create/customer-create.handler';
 import { CustomerUpdateCommand } from '../services/commands/customer-update/customer-update.handler';
+import { CustomerDeleteCommand } from '../services/commands/customer-delete/customer-delete.handler';
 import { LocalizationMessage } from '@/customer/infrastructure/localization';
 import { CustomerGetQuery } from '../services/queries/customer-get/customer-get.handler';
 import { CustomerListQuery } from '../services/queries/customer-list/customer-list.handler';
 import { PageSizePaginationDto } from '@/common/pagination';
 import { GetCustomersResponseDto } from '@/customer/presentation/dto/get-customers.dto';
+import { DeleteCustomerResponseDto } from '@/customer/presentation/dto/delete-customer.dto';
 
 @Injectable()
 export class CustomerUseCase {
@@ -118,6 +120,36 @@ export class CustomerUseCase {
       );
       return {
         data: [],
+        meta: errorMessage,
+      };
+    }
+  }
+
+  public async CustomerDelete(customerId: string, lang: string): Promise<DeleteCustomerResponseDto> {
+    try {
+      const isDeleted = await this.commandBus.execute(new CustomerDeleteCommand(customerId, lang));
+
+      return {
+        data: {
+          isDeleted,
+        },
+        meta: {
+          ...localization.message(LocalizationMessage.CUSTOMER_DELETE_SUCCESSFULLY, { lang }),
+        },
+      };
+    } catch (error) {
+      if (error?.response?.meta) throw error;
+      const errorMessage = localization.message(
+        LocalizationMessage.INTERNAL_SERVER_ERROR,
+        { lang },
+        true,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+        error,
+      );
+      return {
+        data: {
+          isDeleted: false,
+        },
         meta: errorMessage,
       };
     }

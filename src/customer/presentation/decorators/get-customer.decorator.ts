@@ -4,7 +4,7 @@ import {
   CustomerGetInformation,
   CustomerGetSuccessResponse,
   CustomerGetNotFoundResponse,
-} from '../openapis/get-customer.openapi';
+} from '../openapis';
 import { CommonResponseOpenApi } from '@/common';
 
 export function CustomerGetOpenApiDecorator() {

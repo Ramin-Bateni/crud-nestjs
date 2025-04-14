@@ -68,5 +68,15 @@
             "developer": "Get pagination process successfully.",
             "client": "Get pagination process successfully."
         }
-    }   
+    },
+    "CUSTOMER_DELETE_SUCCESSFULLY": {
+        "code": {
+            "enum": "CUSTOMER_DELETE_SUCCESSFULLY",
+            "number": 10200
+        },
+        "text": {
+            "developer": "Customer delete process successfully.",
+            "client": "Customer delete process successfully."
+        }
+    }
 }

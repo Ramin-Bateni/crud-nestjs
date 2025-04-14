@@ -3,7 +3,7 @@ import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import {
   CustomerCreateInformation,
   CustomerCreateSuccessResponse,
-} from '../openapis/create-customer.openapi';
+} from '../openapis';
 import { CommonResponseOpenApi } from '@/common';
 
 export function CustomerCreateOpenApiDecorator() {

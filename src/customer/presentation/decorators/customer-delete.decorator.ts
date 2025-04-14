@@ -1,17 +1,19 @@
 import { applyDecorators } from '@nestjs/common';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import {
-  CustomerUpdateInformation,
-  CustomerUpdateSuccessResponse,
-  CustomerUpdateNotFoundResponse,
+  CustomerDeleteInformation,
+  CustomerDeleteSuccessResponse,
+  CustomerDeleteNotFoundResponse,
+  CustomerDeleteBadRequestResponse,
 } from '../openapis';
 import { CommonResponseOpenApi } from '@/common';
 
-export function CustomerUpdateOpenApiDecorator() {
+export function CustomerDeleteOpenApiDecorator() {
   return applyDecorators(
-    ApiOperation(CustomerUpdateInformation),
-    ApiResponse(CustomerUpdateSuccessResponse),
-    ApiResponse(CustomerUpdateNotFoundResponse),
+    ApiOperation(CustomerDeleteInformation),
+    ApiResponse(CustomerDeleteSuccessResponse),
+    ApiResponse(CustomerDeleteNotFoundResponse),
+    ApiResponse(CustomerDeleteBadRequestResponse),
     ApiResponse(CommonResponseOpenApi.InternalServerErrorResponse),
     ApiResponse(CommonResponseOpenApi.ServiceUnavaiableResponse),
     ApiResponse(CommonResponseOpenApi.TooManyRequestResponse),

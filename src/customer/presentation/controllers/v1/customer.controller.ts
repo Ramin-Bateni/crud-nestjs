@@ -1,13 +1,14 @@
-import { Controller, Post, Body, Headers, Version, Put, Param, Get, Query } from '@nestjs/common';
+import { Controller, Post, Body, Headers, Version, Put, Param, Get, Query, Delete } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CustomerUseCase } from '../../../application/use-cases/customer.use-case';
 import { CustomerCreateDto, CustomerResponseDto } from '../../dto/create-customer.dto';
 import { GetCustomerUpdateResponseDto, GetCustomerId, GetCustomerUpdateRequestDto } from '../../dto/update-customer.dto';
-import { CustomerCreateOpenApiDecorator, CustomerUpdateOpenApiDecorator, CustomerGetOpenApiDecorator, CustomerListOpenApiDecorator } from '../../decorators';
+import { CustomerCreateOpenApiDecorator, CustomerUpdateOpenApiDecorator, CustomerGetOpenApiDecorator, CustomerListOpenApiDecorator, CustomerDeleteOpenApiDecorator } from '../../decorators';
 import { GetLanguageDto } from '@/common';
 import { GetCustomerResponseDto } from '../../dto';
 import { GetCustomersResponseDto } from '../../dto/get-customers.dto';
 import { PageSizePaginationDto } from '@/common/pagination';
+import { DeleteCustomerResponseDto } from '../../dto/delete-customer.dto';
 
 @ApiTags('Customers')
 @Controller('v1/customers')
@@ -53,5 +54,15 @@ export class V1CustomerController {
     @Query() paginationDto: PageSizePaginationDto,
   ): Promise<GetCustomersResponseDto> {
     return this.customerUseCase.CustomerList(paginationDto, language);
+  }
+
+  @Version('1')
+  @Delete('/:customerId')
+  @CustomerDeleteOpenApiDecorator()
+  public async CustomerDelete(
+    @Headers() { language }: GetLanguageDto,
+    @Param() { customerId }: GetCustomerId,
+  ): Promise<DeleteCustomerResponseDto> {
+    return this.customerUseCase.CustomerDelete(customerId, language);
   }
 } 
