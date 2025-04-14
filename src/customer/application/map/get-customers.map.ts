@@ -3,8 +3,8 @@ import { GetCustomerResponseInterface } from '../interfaces';
 
 export class GetCustomersMap {
   static async items(items: CustomerDocument[]): Promise<GetCustomerResponseInterface[]> {
-    return items.map((item) => ({
-      id: item?.id,
+    return items.map(item => ({
+      id: item?._id?.toString() || '',
       firstName: item?.firstName,
       lastName: item?.lastName,
       email: item?.email,

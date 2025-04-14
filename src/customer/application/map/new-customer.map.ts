@@ -4,7 +4,7 @@ import { NewCustomerCreateInterface } from '../interfaces';
 export class NewCustomerMap {
   static async item(item: CustomerDocument): Promise<NewCustomerCreateInterface> {
     return {
-      id: item?.id,
+      id: item?._id?.toString() || '',
       firstName: item?.firstName,
       lastName: item?.lastName,
       email: item?.email,

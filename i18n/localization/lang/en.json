@@ -1,0 +1,16 @@
+{
+  "LANGUAGE_NOT_SUPPORTED": {
+    "developer": "Language not supported",
+    "client": "Your language not supported!"
+  },
+  "CUSTOMER": {
+    "NOT_FOUND": {
+      "developer": "Customer not found",
+      "client": "Customer not found"
+    },
+    "FOUND": {
+      "developer": "Customer found successfully",
+      "client": "Customer found successfully"
+    }
+  }
+} 

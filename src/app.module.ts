@@ -12,7 +12,7 @@ import * as path from 'path';
     I18nModule.forRoot({
       fallbackLanguage: DEFAULT_LANGUAGE_CONFIG(),
       loaderOptions: {
-        path: path.join(__dirname, './i18n/localization/lang/'),
+        path: path.join(__dirname, 'i18n/localization/lang/'),
         watch: true,
       },
       resolvers: [new QueryResolver(['lang', 'l']), { use: QueryResolver, options: ['lang'] }, AcceptLanguageResolver],

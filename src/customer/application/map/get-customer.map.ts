@@ -4,7 +4,7 @@ import { GetCustomerResponseInterface } from '../interfaces';
 export class GetCustomerMap {
   static async item(item: CustomerDocument): Promise<GetCustomerResponseInterface> {
     return {
-      id: item?.id,
+      id: item?._id?.toString() || '',
       firstName: item?.firstName,
       lastName: item?.lastName,
       email: item?.email,
