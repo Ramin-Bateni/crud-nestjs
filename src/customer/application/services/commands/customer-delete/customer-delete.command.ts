@@ -35,7 +35,7 @@ export class CustomerDeleteHandler implements ICommandHandler<CustomerDeleteComm
       };
     }
 
-    await this.customerMongoRepository.DeleteById(customerId);
+    await this.customerMongoRepository.DestroyById(customerId);
     return true;
   }
 } 
