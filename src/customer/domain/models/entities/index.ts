@@ -1,0 +1,1 @@
+export { Customer, CustomerDocument, CustomerSchema } from './customer.entity';
