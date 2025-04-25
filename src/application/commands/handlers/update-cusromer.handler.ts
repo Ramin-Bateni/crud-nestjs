@@ -33,7 +33,6 @@ export class UpdateCustomerHandler implements ICommandHandler<UpdateCustomerComm
       existingCustomer.updateEmail(command.email);
     }
 
-    // 3. Save updated customer
     await this.repository.save(existingCustomer);
   }
 }
