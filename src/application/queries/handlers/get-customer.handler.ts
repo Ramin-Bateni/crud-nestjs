@@ -8,8 +8,7 @@ import { CustomerResponseDto } from 'src/interfaces/rest/dto/customer.dto';
 @QueryHandler(GetCustomerQuery)
 export class GetCustomerHandler implements IQueryHandler<GetCustomerQuery> {
   constructor(
-    @Inject('ICustomerRepository')
-    private readonly repository: ICustomerRepository
+    @Inject('ICustomerRepository') private readonly repository: ICustomerRepository
   ) {}
 
   async execute(query: GetCustomerQuery): Promise<CustomerResponseDto|null> {

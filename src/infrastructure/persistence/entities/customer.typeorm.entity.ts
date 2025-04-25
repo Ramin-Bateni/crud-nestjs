@@ -19,7 +19,7 @@ export class CustomerOrmEntity {
     type: 'varchar',
     length: 15 // Optimized storage for E.164 format
   })
-  phoneNumber: string;
+  phone: string;
 
   @Column({ unique: true })
   email: string;

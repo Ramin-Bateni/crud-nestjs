@@ -3,7 +3,7 @@ import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { Customer } from "src/core/domain/customer.entity";
 import { ICustomerRepository } from "src/core/repositories/customer.repository.interface";
 import { CustomerValidator } from "src/core/services/customer.validator.service";
-import { CreateCustomerCommand } from "../create-customer.command";
+import { CreateCustomerCommand } from "../impl/create-customer.command";
 import { PhoneValidator } from "src/infrastructure/validation/phone.validator";
 
 @CommandHandler(CreateCustomerCommand)

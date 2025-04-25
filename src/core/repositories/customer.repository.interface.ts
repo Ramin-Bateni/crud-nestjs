@@ -3,7 +3,7 @@ import { Customer } from '../domain/customer.entity';
 
 export interface ICustomerRepository {
   save(customer: Customer): Promise<Result<void>>;
-  delete(customer: Customer): Promise<Result<void>>;
+  delete(id: string): Promise<Result<void>>;
   findById(id: string): Promise<Result<Customer | null>>;
 
   findByEmail(email: string): Promise<Result<Customer | null>>;
@@ -15,5 +15,13 @@ export interface ICustomerRepository {
     dateOfBirth: Date
   ): Promise<Result<boolean>>;
 
-  findAll(): Promise<Result<Customer[]>>;
+  findAll(
+    filters?: {
+      nameContains?: string;
+    },
+    pagination?: {
+      limit: number;
+      offset: number;
+    }
+  ): Promise<[Customer[], number]>;
 }
