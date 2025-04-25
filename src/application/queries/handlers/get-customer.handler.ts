@@ -14,9 +14,8 @@ export class GetCustomerHandler implements IQueryHandler<GetCustomerQuery> {
   async execute(query: GetCustomerQuery): Promise<CustomerResponseDto|null> {
     const customer = await this.repository.findById(query.customerId);
     
-    if (customer && customer.isSuccess) {
-        const customerValue = customer.getValue();
-        return customerValue ? this.mapToDto(customerValue) : null;
+    if (customer) {
+        return customer ? this.mapToDto(customer) : null;
     }
 
     throw new NotFoundException('Customer not found')

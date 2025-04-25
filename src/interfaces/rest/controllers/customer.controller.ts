@@ -1,9 +1,10 @@
-import { Controller, Post, Body, Get, Param, Query } from "@nestjs/common";
+import { Controller, Post, Body, Get, Param, Query, Patch } from "@nestjs/common";
 import { CommandBus, QueryBus } from "@nestjs/cqrs";
 import { CreateCustomerCommand } from "src/application/commands/impl/create-customer.command";
-import { CreateCustomerDto } from "../dto/customer.dto";
+import { CreateCustomerDto, UpdateCustomerDto } from "../dto/customer.dto";
 import { GetCustomerQuery } from "src/application/queries/impl/get-customer.query";
 import { GetCustomerListQuery } from "src/application/queries/impl/get-customer-list.query";
+import { UpdateCustomerCommand } from "src/application/commands/impl/update-customer.command";
 
 @Controller('customers')
 export class CustomerController {
@@ -29,6 +30,23 @@ export class CustomerController {
     ));
   }
   
+  @Patch(':id')
+  async update(
+    @Param('id') id: string,
+    @Body() dto: UpdateCustomerDto
+  ) {
+    await this.commandBus.execute(
+      new UpdateCustomerCommand(
+        id,
+        dto.firstName,
+        dto.lastName,
+        dto.phone,
+        dto.email,
+        dto.bankAccountNumber
+      )
+    );
+    return { status: 'success' };
+  }
 
   @Post()
   async create(@Body() dto: CreateCustomerDto) {

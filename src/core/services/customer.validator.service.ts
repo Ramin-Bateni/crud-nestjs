@@ -13,7 +13,7 @@ export class CustomerValidator {
   async validate(customer: Customer): Promise<void> {
     // 1. Check email uniqueness
     const existingEmail = await this.repository.findByEmail(customer.email);
-    if (existingEmail && existingEmail.isSuccess && existingEmail.getValue()?.id !== customer.id) {
+    if (existingEmail && existingEmail?.id !== customer.id) {
       throw new Error('Email already exists');
     }
 

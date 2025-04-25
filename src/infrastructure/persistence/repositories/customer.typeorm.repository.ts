@@ -11,32 +11,36 @@ export class CustomerTypeOrmRepository implements ICustomerRepository {
   constructor(
     @InjectRepository(CustomerOrmEntity) private ormRepo: Repository<CustomerOrmEntity>
   ) {}
-  async delete(id: string): Promise<Result<void>> {
+  async delete(id: string): Promise<void> {
     const customer = await this.ormRepo.findOne({where: {id: id}});
     if(customer){
       await this.ormRepo.delete(id)
-      return Result.ok()
     }
-    return Result.fail('customer not found!')
   }
-  async findById(id: string): Promise<Result<Customer | null>> {
+  async findById(id: string): Promise<Customer | null> {
     const customer = await this.ormRepo.findOne({where: {id: id}});
-    if(customer) return Result.ok(this.mapToDomain(customer))
-    return Result.fail('customer not found!')
+    if(customer) return this.mapToDomain(customer)
+    return null;
   }
-  async findByEmail(email: string): Promise<Result<Customer | null>> {
+  async findByEmail(email: string): Promise<Customer | null> {
     const customer = await this.ormRepo.findOne({where: {email: email}});
-    if(customer) return Result.ok(this.mapToDomain(customer))
-    return Result.fail('customer not found!')
+    if(customer) return this.mapToDomain(customer)
+    return null;
   }
-  async existsByUniqueFields(firstName: string, lastName: string, dateOfBirth: Date): Promise<Result<boolean>> {
+  
+  async existsByEmail(email: string): Promise<boolean> {
+    const customer = await this.ormRepo.findOne({where: {email: email}});
+    return !!customer;
+  }
+  
+  async existsByUniqueFields(firstName: string, lastName: string, dateOfBirth: Date): Promise<boolean> {
     const customer = await this.ormRepo.findOne({where: {
       firstName: firstName,
       lastName: lastName,
       dateOfBirth: dateOfBirth
     }});
-    if(customer) return Result.ok(true)
-    return Result.ok(false)
+    
+    return !!customer;
   }
   async findAll(filters: { nameContains?: string }, pagination?: {limit: number;offset: number}) {
     const query = this.ormRepo.createQueryBuilder('customer');
@@ -48,14 +52,13 @@ export class CustomerTypeOrmRepository implements ICustomerRepository {
     if (pagination) {
       query.skip(pagination.offset).take(pagination.limit);
     }
-    
+
     const customerRes: [CustomerOrmEntity[], number] = await query.getManyAndCount();
     return [customerRes[0].map(customer => this.mapToDomain(customer)), customerRes[1]] as [Customer[], number] ;  
   }
 
-  async save(customer: Customer): Promise<Result<void>> {
+  async save(customer: Customer): Promise<void> {
     await this.ormRepo.save(this.mapToOrm(customer));
-    return Result.ok();
   }
 
   private mapToOrm(customer: Customer): CustomerOrmEntity {

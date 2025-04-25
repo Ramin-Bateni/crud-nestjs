@@ -45,12 +45,11 @@ export class Customer {
       return this._phoneNumber;
     }
   
-    updatePhoneNumber(phone: string, validator: PhoneValidator): Result<void> {
-      const validation = validator.validate(phone);
-      if (!validation.isValid) {
-        return Result.fail(validation.error!);
-      }
-      this._phoneNumber = validation.normalizedNumber!;
-      return Result.ok();
+    updatePhoneNumber(phone: string): void {
+      this._phoneNumber = phone;
+    }
+
+    updateEmail(email: string): void {
+      this.email = email;
     }
   }
