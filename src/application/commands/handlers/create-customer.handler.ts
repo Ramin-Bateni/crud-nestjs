@@ -1,4 +1,4 @@
-import { BadRequestException } from "@nestjs/common";
+import { BadRequestException, Inject } from "@nestjs/common";
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { Customer } from "src/core/domain/customer.entity";
 import { ICustomerRepository } from "src/core/repositories/customer.repository.interface";
@@ -9,7 +9,7 @@ import { PhoneValidator } from "src/infrastructure/validation/phone.validator";
 @CommandHandler(CreateCustomerCommand)
 export class CreateCustomerHandler implements ICommandHandler<CreateCustomerCommand> {
   constructor(
-    private readonly repository: ICustomerRepository,
+    @Inject('ICustomerRepository') private readonly repository: ICustomerRepository,
     private readonly validator: CustomerValidator,
     private readonly phoneValidator: PhoneValidator
   ) {}
