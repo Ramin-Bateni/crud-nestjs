@@ -1,0 +1,11 @@
+services:
+
+  crud_db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: upsql
+      POSTGRES_PASSWORD: 123456
+    ports:
+      - 5431:5432
+
