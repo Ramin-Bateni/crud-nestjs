@@ -1,10 +1,11 @@
-import { Controller, Post, Body, Get, Param, Query, Patch } from "@nestjs/common";
+import { Controller, Post, Body, Get, Param, Query, Patch, Delete, HttpCode } from "@nestjs/common";
 import { CommandBus, QueryBus } from "@nestjs/cqrs";
 import { CreateCustomerCommand } from "src/application/commands/impl/create-customer.command";
 import { CreateCustomerDto, UpdateCustomerDto } from "../dto/customer.dto";
 import { GetCustomerQuery } from "src/application/queries/impl/get-customer.query";
 import { GetCustomerListQuery } from "src/application/queries/impl/get-customer-list.query";
 import { UpdateCustomerCommand } from "src/application/commands/impl/update-customer.command";
+import { DeleteCustomerCommand } from "src/application/commands/impl/delete-customer.command";
 
 @Controller('customers')
 export class CustomerController {
@@ -46,6 +47,12 @@ export class CustomerController {
       )
     );
     return { status: 'success' };
+  }
+
+  @Delete(':id')
+  @HttpCode(204)
+  async delete(@Param('id') id: string) {
+    await this.commandBus.execute(new DeleteCustomerCommand(id));
   }
 
   @Post()

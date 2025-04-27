@@ -1,0 +1,146 @@
+{
+    "info": {
+        "_postman_id": "5562830f-9860-436c-bb19-8a0871fd39e2",
+        "name": "test",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "description": ""
+    },
+    "item": [
+        {
+            "name": "save",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "http://127.0.0.1:3000/customers",
+                    "path": [
+                        "customers"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "127",
+                        "0",
+                        "0",
+                        "1"
+                    ],
+                    "port": "3000"
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"firstName\": \"meysam\",\n  \"lastName\": \"goodarzi\",\n  \"dateOfBirth\": \"2025\",\n  \"phoneNumber\": \"+989190960307\",\n  \"email\": \"meysam.g7@gmail.com\",\n  \"bankAccountNumber\": \"78945612312345678\"\n}"
+                }
+            }
+        },
+        {
+            "name": "update",
+            "request": {
+                "method": "PATCH",
+                "url": {
+                    "raw": "http://127.0.0.1:3000/customers/c01ae086-cbdd-40fd-913c-775b4479e536",
+                    "path": [
+                        "customers",
+                        "c01ae086-cbdd-40fd-913c-775b4479e536"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "127",
+                        "0",
+                        "0",
+                        "1"
+                    ],
+                    "port": "3000"
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"lastName\": \"goodarzi2\"\n}"
+                }
+            }
+        },
+        {
+            "name": "find",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "http://127.0.0.1:3000/customers/c01ae086-cbdd-40fd-913c-775b4479e536",
+                    "path": [
+                        "customers",
+                        "c01ae086-cbdd-40fd-913c-775b4479e536"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "127",
+                        "0",
+                        "0",
+                        "1"
+                    ],
+                    "port": "3000"
+                }
+            }
+        },
+        {
+            "name": "find all",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "http://127.0.0.1:3000/customers/?search=mey&offset=0&limit=10",
+                    "query": [
+                        {
+                            "key": "search",
+                            "value": "mey"
+                        },
+                        {
+                            "key": "offset",
+                            "value": "0"
+                        },
+                        {
+                            "key": "limit",
+                            "value": "10"
+                        }
+                    ],
+                    "variable": [],
+                    "path": [
+                        "customers"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "127",
+                        "0",
+                        "0",
+                        "1"
+                    ],
+                    "port": "3000"
+                }
+            }
+        },
+        {
+            "name": "delete",
+            "request": {
+                "method": "DELETE",
+                "url": {
+                    "raw": "http://127.0.0.1:3000/customers/c01ae086-cbdd-40fd-913c-775b4479e536",
+                    "path": [
+                        "customers",
+                        "c01ae086-cbdd-40fd-913c-775b4479e536"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "127",
+                        "0",
+                        "0",
+                        "1"
+                    ],
+                    "port": "3000"
+                }
+            }
+        }
+    ]
+}

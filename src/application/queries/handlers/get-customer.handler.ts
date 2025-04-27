@@ -28,7 +28,7 @@ export class GetCustomerHandler implements IQueryHandler<GetCustomerQuery> {
       fullName: `${domain.firstName} ${domain.lastName}`,
       email: domain.email,
       phone: domain.phone,
-      dateOfBirth: domain.dateOfBirth.toISOString(),
+      dateOfBirth: new Date(domain.dateOfBirth).toISOString(),
       bankAccountNumber: domain.bankAccountNumber,
     };
   }

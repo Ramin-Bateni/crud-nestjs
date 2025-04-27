@@ -15,6 +15,7 @@ export class CreateCustomerHandler implements ICommandHandler<CreateCustomerComm
   ) {}
 
   async execute(command: CreateCustomerCommand) {
+    console.log('command ------->', command)
     const customerResult = Customer.create({ ...command, phoneNumber: command.phone }, this.phoneValidator);
     if (customerResult.isFailure) {
       throw new BadRequestException(customerResult.getError());

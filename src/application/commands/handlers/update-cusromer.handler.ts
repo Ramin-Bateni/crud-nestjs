@@ -17,6 +17,18 @@ export class UpdateCustomerHandler implements ICommandHandler<UpdateCustomerComm
       throw new NotFoundException(`Customer ${command.id} not found`);
     }
 
+    if (command.firstName !== undefined) {
+      existingCustomer.firstName = command.firstName;
+    }
+
+    if (command.lastName !== undefined) {
+      existingCustomer.lastName = command.lastName;
+    }
+
+    if (command.bankAccountNumber !== undefined) {
+      existingCustomer.bankAccountNumber = command.bankAccountNumber;
+    }
+
     if (command.phone) {
       const validation = this.phoneValidator.validate(command.phone);
       if (!validation.isValid) {

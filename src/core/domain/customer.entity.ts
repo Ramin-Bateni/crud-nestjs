@@ -1,5 +1,5 @@
-import { PhoneValidator } from "src/infrastructure/validation/phone.validator";
-import { Result } from "src/interfaces/rest/dto/result.dto";
+import { PhoneValidator } from "../../infrastructure/validation/phone.validator";
+import { Result } from "../../interfaces/rest/dto/result.dto";
 import { uuid } from "uuidv4";
 
 export class Customer {

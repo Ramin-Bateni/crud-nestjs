@@ -32,7 +32,7 @@ export class GetCustomerListHandler implements IQueryHandler<GetCustomerListQuer
         fullName: `${customer.firstName} ${customer.lastName}`,
         email: customer.email,
         phone: customer.phone,
-        dateOfBirth: customer.dateOfBirth.toISOString(),
+        dateOfBirth: new Date(customer.dateOfBirth).toISOString(),
         bankAccountNumber: customer.bankAccountNumber,
     };
   }
