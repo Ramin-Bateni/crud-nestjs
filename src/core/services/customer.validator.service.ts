@@ -1,7 +1,7 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { Customer } from "../domain/customer.entity";
 import { ICustomerRepository } from "../repositories/customer.repository.interface";
-import { PhoneValidator } from "src/infrastructure/validation/phone.validator";
+import { PhoneValidator } from "../../infrastructure/validation/phone.validator";
 
 @Injectable()
 export class CustomerValidator {

@@ -1,4 +1,3 @@
-
 import { DeleteCustomerHandler } from "../../../commands/handlers/delete-customer.handler";
 import { DeleteCustomerCommand } from "../../../commands/impl/delete-customer.command";
 import { Customer } from "../../../../core/domain/customer.entity";

@@ -2,7 +2,7 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { UpdateCustomerCommand } from '../impl/update-customer.command';
 import { Inject, NotFoundException, BadRequestException, ConflictException } from '@nestjs/common';
 import { ICustomerRepository } from 'src/core/repositories/customer.repository.interface';
-import { PhoneValidator } from 'src/infrastructure/validation/phone.validator';
+import { PhoneValidator } from '../../../infrastructure/validation/phone.validator';
 
 @CommandHandler(UpdateCustomerCommand)
 export class UpdateCustomerHandler implements ICommandHandler<UpdateCustomerCommand> {
@@ -31,7 +31,7 @@ export class UpdateCustomerHandler implements ICommandHandler<UpdateCustomerComm
 
     if (command.phone) {
       const validation = this.phoneValidator.validate(command.phone);
-      if (!validation.isValid) {
+      if (!validation?.isValid) {
         throw new BadRequestException(validation.error);
       }
       existingCustomer.updatePhoneNumber(validation.normalizedNumber!);
