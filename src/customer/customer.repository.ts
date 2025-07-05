@@ -21,14 +21,14 @@ export class CustomerRepository {
     return this.customerRepository.find();
   }
 
-  async findOne(id: string): Promise<Customer> {
+  async findOne(id: string): Promise<Customer | null> {
     return this.customerRepository.findOneBy({ id });
   }
 
   async update(
     id: string,
     updateCustomerDto: UpdateCustomerDto,
-  ): Promise<Customer> {
+  ): Promise<Customer | null> {
     await this.customerRepository.update(id, updateCustomerDto);
     return this.findOne(id);
   }
