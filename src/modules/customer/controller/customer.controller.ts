@@ -21,7 +21,18 @@ import { DeleteCustomerCommand } from '../commands/delete-customer.command';
 import { FindCustomerDto } from '../dtos/find-customer.dto';
 import { PaginatedResult } from '../../../common/interfaces/paginated-result.interface';
 import { FindCustomerQuery } from '../queries/find-customer.query';
+import {
+  ApiBody,
+  ApiCreatedResponse,
+  ApiNoContentResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger';
+import { ApiPaginatedResponse } from '../../../common/decorators/api-paginated-response.decorator';
 
+@ApiTags('customers')
 @Controller('customers')
 export class CustomerController {
   constructor(
@@ -29,6 +40,17 @@ export class CustomerController {
     private readonly queryBus: QueryBus,
   ) {}
 
+  @ApiOperation({
+    summary: 'creates a new customer',
+  })
+  @ApiBody({
+    description: 'body for creating a customer',
+    type: CreateCustomerDto,
+  })
+  @ApiCreatedResponse({
+    description: 'returns the created customer',
+    type: CustomerDto,
+  })
   @Post()
   async create(@Body() dto: CreateCustomerDto): Promise<CustomerDto> {
     const command = new CreateCustomerCommand(
@@ -48,6 +70,17 @@ export class CustomerController {
     return CustomerDto.fromCustomer(customer);
   }
 
+  @ApiOperation({
+    summary: 'finds customers',
+  })
+  @ApiQuery({
+    description: 'query params for finding customers',
+    type: FindCustomerDto,
+  })
+  @ApiPaginatedResponse({
+    description: 'returns found customers',
+    type: CustomerDto,
+  })
   @Get()
   async find(
     @Body() dto: FindCustomerDto,
@@ -65,6 +98,13 @@ export class CustomerController {
     };
   }
 
+  @ApiOperation({
+    summary: 'gets a customer',
+  })
+  @ApiOkResponse({
+    description: 'returns the customer',
+    type: CustomerDto,
+  })
   @Get(':id')
   async get(@Param('id') id: string): Promise<CustomerDto> {
     const query = new GetCustomerQuery(id);
@@ -81,6 +121,17 @@ export class CustomerController {
     return CustomerDto.fromCustomer(customer);
   }
 
+  @ApiOperation({
+    summary: 'updates a customer',
+  })
+  @ApiBody({
+    description: 'body for updating a customer',
+    type: UpdateCustomerDto,
+  })
+  @ApiOkResponse({
+    description: 'returns the updated customer',
+    type: CustomerDto,
+  })
   @Patch(':id')
   async update(
     @Param('id') id: string,
@@ -96,6 +147,12 @@ export class CustomerController {
     return CustomerDto.fromCustomer(customer);
   }
 
+  @ApiOperation({
+    summary: 'deletes a new customer',
+  })
+  @ApiNoContentResponse({
+    description: 'deletes the customer',
+  })
   @Delete(':id')
   @HttpCode(204)
   async delete(@Param('id') id: string): Promise<void> {
