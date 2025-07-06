@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { CustomerModule } from './customer/customer.module';
 import { ConfigModule } from '@nestjs/config';
 import { AppConfigService } from './config.service';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -19,8 +20,9 @@ import { AppConfigService } from './config.service';
         username: configService.dbUsername,
         password: configService.dbPassword,
         database: configService.dbDatabase,
-        entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        synchronize: configService.dbSync, // Set to false in production
+        // entities: [__dirname + '/**/*.entity{.ts,.js}'],
+        entities: [join(__dirname, '..', '..', '/**/*.entity{.ts,.js}')],
+        synchronize: false, // Set to false in production
       }),
       inject: [AppConfigService],
     }),
