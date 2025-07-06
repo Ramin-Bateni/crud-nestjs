@@ -2,14 +2,13 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CustomerModule } from './customer/customer.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-// import { join } from 'path';
 import { Customer } from './customer/customer.entity';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      isGlobal: true, // Makes ConfigModule available globally
-      envFilePath: '.env', // Path to .env file
+      isGlobal: true,
+      envFilePath: '.env.development', // Path to .env file
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -20,12 +19,8 @@ import { Customer } from './customer/customer.entity';
         username: configService.get<string>('DB_USERNAME', 'postgres'),
         password: configService.get<string>('DB_PASSWORD', 'postgres'),
         database: configService.get<string>('DB_DATABASE', 'crud-app'),
-        // entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        // entities: [join(__dirname, '..', '..', '/**/*.entity{.ts,.js}')],
-        // entities: [join(__dirname, '..', '..', '**', '*.entity.{ts,js}')],
         entities: [Customer],
-
-        synchronize: false, // Set to false in production
+        synchronize: false,
       }),
       inject: [ConfigService],
     }),
