@@ -1,0 +1,39 @@
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: task-postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: task
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: task-app
+    depends_on:
+      - postgres
+    ports:
+      - "3000:3000"
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASS: postgres
+      DB_NAME: task
+    command: ["node", "dist/main.js"]
+    networks:
+      - task-net
+
+volumes:
+  postgres_data:
+
+networks:
+  task-net:
