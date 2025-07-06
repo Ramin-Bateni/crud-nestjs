@@ -4,6 +4,7 @@ import {
   Get,
   NotFoundException,
   Param,
+  Patch,
   Post,
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
@@ -12,6 +13,8 @@ import { CreateCustomerCommand } from '../commands/create-customer.command';
 import { CustomerDto } from '../dtos/customer.dto';
 import { Customer } from '../entities/customer.entity';
 import { GetCustomerQuery } from '../queries/get-customer.query';
+import { UpdateCustomerDto } from '../dtos/update-customer.dto';
+import { UpdateCustomerCommand } from '../commands/update-customer.command';
 
 @Controller('customers')
 export class CustomerController {
@@ -51,6 +54,21 @@ export class CustomerController {
     if (!customer) {
       throw new NotFoundException('Customer not found');
     }
+
+    return CustomerDto.fromCustomer(customer);
+  }
+
+  @Patch(':id')
+  async update(
+    @Param('id') id: string,
+    @Body() dto: UpdateCustomerDto,
+  ): Promise<CustomerDto> {
+    const command = new UpdateCustomerCommand(id, dto);
+
+    const customer = await this.commandBus.execute<
+      UpdateCustomerCommand,
+      Customer
+    >(command);
 
     return CustomerDto.fromCustomer(customer);
   }

@@ -5,6 +5,7 @@ import { CreateCustomerDto } from '../dtos/create-customer.dto';
 import { Customer } from '../entities/customer.entity';
 import { CustomerDto } from '../dtos/customer.dto';
 import { NotFoundException } from '@nestjs/common';
+import { UpdateCustomerDto } from '../dtos/update-customer.dto';
 
 describe('CreateCustomerHandler', () => {
   let controller: CustomerController;
@@ -74,6 +75,21 @@ describe('CreateCustomerHandler', () => {
       mockQueryBus.execute.mockResolvedValue(null);
 
       await expect(controller.get(id)).rejects.toThrow(NotFoundException);
+    });
+  });
+
+  describe('update()', () => {
+    it('should be return a customer', async () => {
+      const id = 'some-id';
+      const dto = new UpdateCustomerDto();
+      const customer = new Customer();
+      customer.dateOfBirth = new Date();
+
+      mockCommandBus.execute.mockResolvedValue(customer);
+
+      await expect(controller.update(id, dto)).resolves.toStrictEqual(
+        CustomerDto.fromCustomer(customer),
+      );
     });
   });
 });
