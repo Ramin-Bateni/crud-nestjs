@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
   IsString,
   IsDateString,
@@ -28,22 +29,47 @@ class IsBankAccountNumberConstraint implements ValidatorConstraintInterface {
 }
 
 export class CreateCustomerDto {
+  @ApiProperty({
+    example: 'John',
+    description: 'First name of the customer',
+  })
   @IsString()
   firstName: string;
 
+  @ApiProperty({
+    example: 'Doe',
+    description: 'Last name of the customer',
+  })
   @IsString()
   lastName: string;
 
+  @ApiProperty({
+    example: '1990-01-01',
+    description: 'Date of birth in ISO 8601 format',
+    type: String,
+    format: 'date-time',
+  })
   @IsDateString()
   dateOfBirth: string;
 
-  // @IsString()
+  @ApiProperty({
+    example: '+1234567890',
+    description: 'Phone number in international format',
+  })
   @IsPhoneNumber()
   phoneNumber: string;
 
+  @ApiProperty({
+    example: 'john.doe@example.com',
+    description: 'Email address of the customer',
+  })
   @IsEmail()
   email: string;
 
+  @ApiProperty({
+    example: '1234567890123456',
+    description: 'Bank account number validated by custom constraint',
+  })
   @IsString()
   @Validate(IsBankAccountNumberConstraint)
   bankAccountNumber: string;
