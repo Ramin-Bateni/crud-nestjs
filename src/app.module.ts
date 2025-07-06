@@ -1,8 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CustomerModule } from './customer/customer.module';
-import { ConfigModule } from '@nestjs/config';
-import { AppConfigService } from './config.service';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { join } from 'path';
 
 @Module({
@@ -13,18 +12,18 @@ import { join } from 'path';
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: (configService: AppConfigService) => ({
+      useFactory: (configService: ConfigService) => ({
         type: 'postgres',
-        host: configService.dbHost,
-        port: configService.dbPort,
-        username: configService.dbUsername,
-        password: configService.dbPassword,
-        database: configService.dbDatabase,
+        host: configService.get<string>('DB_HOST', 'localhost'),
+        port: configService.get<number>('DB_PORT', 5432),
+        username: configService.get<string>('DB_USERNAME', 'postgres'),
+        password: configService.get<string>('DB_PASSWORD', 'postgres'),
+        database: configService.get<string>('DB_DATABASE', 'crud-app'),
         // entities: [__dirname + '/**/*.entity{.ts,.js}'],
         entities: [join(__dirname, '..', '..', '/**/*.entity{.ts,.js}')],
         synchronize: false, // Set to false in production
       }),
-      inject: [AppConfigService],
+      inject: [ConfigService],
     }),
     CustomerModule,
   ],
