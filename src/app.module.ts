@@ -8,7 +8,7 @@ import { Customer } from './customer/customer.entity';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: '.env.development', // Path to .env file
+      envFilePath: '.env', // Path to .env file
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
