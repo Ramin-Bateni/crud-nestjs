@@ -3,6 +3,7 @@ import { CustomerModule } from './modules/customer/customer.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as path from 'path';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
+import { HealthModule } from './modules/health/health.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
       namingStrategy: new SnakeNamingStrategy(),
     }),
     CustomerModule,
+    HealthModule,
   ],
   controllers: [],
   providers: [],
