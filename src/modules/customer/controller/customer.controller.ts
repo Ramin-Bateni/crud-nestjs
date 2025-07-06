@@ -6,6 +6,7 @@ import {
   HttpCode,
   NotFoundException,
   Param,
+  ParseUUIDPipe,
   Patch,
   Post,
 } from '@nestjs/common';
@@ -106,7 +107,7 @@ export class CustomerController {
     type: CustomerDto,
   })
   @Get(':id')
-  async get(@Param('id') id: string): Promise<CustomerDto> {
+  async get(@Param('id', ParseUUIDPipe) id: string): Promise<CustomerDto> {
     const query = new GetCustomerQuery(id);
 
     const customer = await this.queryBus.execute<
@@ -134,7 +135,7 @@ export class CustomerController {
   })
   @Patch(':id')
   async update(
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() dto: UpdateCustomerDto,
   ): Promise<CustomerDto> {
     const command = new UpdateCustomerCommand(id, dto);
@@ -155,7 +156,7 @@ export class CustomerController {
   })
   @Delete(':id')
   @HttpCode(204)
-  async delete(@Param('id') id: string): Promise<void> {
+  async delete(@Param('id', ParseUUIDPipe) id: string): Promise<void> {
     const command = new DeleteCustomerCommand(id);
 
     await this.commandBus.execute<DeleteCustomerCommand, void>(command);
