@@ -27,7 +27,7 @@ export class CustomerService {
   async update(
     id: string,
     updateCustomerDto: UpdateCustomerDto,
-  ): Promise<Customer> {
+  ): Promise<Customer | null> {
     const customer = await this.customerRepository.findOne(id);
     if (!customer) {
       throw new NotFoundException(`Customer with ID ${id} not found`);

@@ -36,7 +36,7 @@ export class CustomerController {
   update(
     @Param('id') id: string,
     @Body() updateCustomerDto: UpdateCustomerDto,
-  ): Promise<Customer> {
+  ): Promise<Customer | null> {
     return this.customerService.update(id, updateCustomerDto);
   }
 
