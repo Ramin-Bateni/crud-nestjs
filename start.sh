@@ -22,11 +22,9 @@ wait_for_service() {
 # Wait for database if configured
 wait_for_service "$DB_HOST" "$DB_PORT" "Database"
 
-# Wait for Redis if configured
-# wait_for_service "$REDIS_HOST" "$REDIS_PORT" "Redis"
 
-# echo "📦 Running database migrations..."
-# yarn run migration:run
+echo "📦 Running database migrations..."
+pnpm run migration:run
 
 # echo "🌱 Seeding database with 10000 records..."
 # yarn run seed 10000

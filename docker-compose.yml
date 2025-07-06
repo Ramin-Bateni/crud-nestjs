@@ -4,7 +4,6 @@ services:
       context: .
       dockerfile: Dockerfile
     restart: unless-stopped
-    # container_name: backend-express
     ports:
       - ${PORT}:${PORT}
     working_dir: /app
@@ -13,11 +12,8 @@ services:
     depends_on:
       db-crud:
         condition: service_healthy
-      # redis-crud:
-      #   condition: service_healthy
 
   db-crud:
-    # container_name: postgres
     image: postgres:15.6-alpine
     ports:
       - '${DB_HOST_PORT}:${DB_PORT}'
@@ -41,39 +37,5 @@ services:
       timeout: 5s
       retries: 5
 
-  # redis-crud:
-  #   container_name: redis-cache
-  #   image: redis:7-alpine
-  #   restart: unless-stopped
-  #   ports:
-  #     - '${REDIS_PORT}:6379'
-  #   volumes:
-  #     - redis_data:/data
-  #   environment:
-  #     - REDIS_PASSWORD=${REDIS_PASSWORD}
-  #   command: >
-  #     sh -c "
-  #     if [ -n \"$$REDIS_PASSWORD\" ]; then
-  #       redis-server --requirepass $$REDIS_PASSWORD --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
-  #     else
-  #       redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
-  #     fi
-  #     "
-  #   healthcheck:
-  #     test:
-  #       - CMD
-  #       - sh
-  #       - -c
-  #       - |
-  #         if [ -n "$$REDIS_PASSWORD" ]; then
-  #           redis-cli -a $$REDIS_PASSWORD ping
-  #         else
-  #           redis-cli ping
-  #         fi
-  #     interval: 5s
-  #     timeout: 3s
-  #     retries: 5
-
 volumes:
   data:
-  # redis_data:
