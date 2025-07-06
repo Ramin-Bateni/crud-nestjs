@@ -5,25 +5,30 @@ import * as path from 'path';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { HealthModule } from './modules/health/health.module';
 import { ConfigurationModule } from './modules/configuration/configuration.module';
+import { DBConfigurationService } from './modules/configuration/services/db-configuration.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres',
-      password: 'postgres',
-      database: 'task',
-      autoLoadEntities: true,
-      migrations: [
-        path.join(__dirname, './database/migrations/*.{ts,js}'),
-        path.join(__dirname, './database/seeders/*.{ts,js}'),
-      ],
-      migrationsRun: true,
-      migrationsTransactionMode: 'each',
-      logging: false,
-      namingStrategy: new SnakeNamingStrategy(),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigurationModule],
+      inject: [DBConfigurationService],
+      useFactory: (config: DBConfigurationService) => ({
+        type: 'postgres',
+        host: config.host,
+        port: config.port,
+        username: config.username,
+        password: config.password,
+        database: config.db,
+        autoLoadEntities: true,
+        migrations: [
+          path.join(__dirname, './database/migrations/*.{ts,js}'),
+          path.join(__dirname, './database/seeders/*.{ts,js}'),
+        ],
+        migrationsRun: true,
+        migrationsTransactionMode: 'each',
+        logging: false,
+        namingStrategy: new SnakeNamingStrategy(),
+      }),
     }),
     CustomerModule,
     HealthModule,
