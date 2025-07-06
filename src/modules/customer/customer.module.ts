@@ -6,10 +6,22 @@ import { CreateCustomerHandler } from './handlers/create-customer.handler';
 import { IsValidPhoneNumber } from './validators/phone.validator';
 import { IsValidBankAccount } from './validators/bank-account.validator';
 import { CustomerController } from './controller/customer.controller';
+import { GetCustomerHandler } from './handlers/get-customer.handler';
+import { FindCustomerHandler } from './handlers/find-customer.handler';
+import { UpdateCustomerHandler } from './handlers/update-customer.handler';
+import { DeleteCustomerHandler } from './handlers/delete-customer.handler';
 
 @Module({
   imports: [CqrsModule, TypeOrmModule.forFeature([Customer])],
   controllers: [CustomerController],
-  providers: [CreateCustomerHandler, IsValidPhoneNumber, IsValidBankAccount],
+  providers: [
+    CreateCustomerHandler,
+    GetCustomerHandler,
+    FindCustomerHandler,
+    UpdateCustomerHandler,
+    DeleteCustomerHandler,
+    IsValidPhoneNumber,
+    IsValidBankAccount,
+  ],
 })
 export class CustomerModule {}
