@@ -18,6 +18,9 @@ import { GetCustomerQuery } from '../queries/get-customer.query';
 import { UpdateCustomerDto } from '../dtos/update-customer.dto';
 import { UpdateCustomerCommand } from '../commands/update-customer.command';
 import { DeleteCustomerCommand } from '../commands/delete-customer.command';
+import { FindCustomerDto } from '../dtos/find-customer.dto';
+import { PaginatedResult } from '../../../common/interfaces/paginated-result.interface';
+import { FindCustomerQuery } from '../queries/find-customer.query';
 
 @Controller('customers')
 export class CustomerController {
@@ -43,6 +46,23 @@ export class CustomerController {
     >(command);
 
     return CustomerDto.fromCustomer(customer);
+  }
+
+  @Get()
+  async find(
+    @Body() dto: FindCustomerDto,
+  ): Promise<PaginatedResult<CustomerDto>> {
+    const query = new FindCustomerQuery(dto);
+
+    const results = await this.queryBus.execute<
+      FindCustomerQuery,
+      PaginatedResult<Customer>
+    >(query);
+
+    return {
+      ...results,
+      data: results.data.map((item) => CustomerDto.fromCustomer(item)),
+    };
   }
 
   @Get(':id')

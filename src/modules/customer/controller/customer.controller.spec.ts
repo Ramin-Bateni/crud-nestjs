@@ -7,6 +7,7 @@ import { CustomerDto } from '../dtos/customer.dto';
 import { NotFoundException } from '@nestjs/common';
 import { UpdateCustomerDto } from '../dtos/update-customer.dto';
 import { DeleteCustomerCommand } from '../commands/delete-customer.command';
+import { FindCustomerDto } from '../dtos/find-customer.dto';
 
 describe('CreateCustomerHandler', () => {
   let controller: CustomerController;
@@ -54,6 +55,28 @@ describe('CreateCustomerHandler', () => {
       await expect(controller.create(dto)).resolves.toStrictEqual(
         CustomerDto.fromCustomer(customer),
       );
+    });
+  });
+
+  describe('find()', () => {
+    it('should find customers', async () => {
+      const dto = new FindCustomerDto();
+      const customer = new Customer();
+      customer.dateOfBirth = new Date();
+
+      const result = {
+        data: [customer],
+        total: 1,
+        skip: dto.skip,
+        take: dto.take,
+      };
+
+      mockQueryBus.execute.mockResolvedValue(result);
+
+      await expect(controller.find(dto)).resolves.toStrictEqual({
+        ...result,
+        data: [CustomerDto.fromCustomer(customer)],
+      });
     });
   });
 
