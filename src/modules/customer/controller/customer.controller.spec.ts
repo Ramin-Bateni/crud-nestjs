@@ -1,14 +1,19 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CustomerController } from './customer.controller';
-import { CommandBus } from '@nestjs/cqrs';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { CreateCustomerDto } from '../dtos/create-customer.dto';
 import { Customer } from '../entities/customer.entity';
 import { CustomerDto } from '../dtos/customer.dto';
+import { NotFoundException } from '@nestjs/common';
 
 describe('CreateCustomerHandler', () => {
   let controller: CustomerController;
 
   const mockCommandBus = {
+    execute: jest.fn(),
+  };
+
+  const mockQueryBus = {
     execute: jest.fn(),
   };
 
@@ -19,6 +24,10 @@ describe('CreateCustomerHandler', () => {
         {
           provide: CommandBus,
           useValue: mockCommandBus,
+        },
+        {
+          provide: QueryBus,
+          useValue: mockQueryBus,
         },
       ],
     }).compile();
@@ -43,6 +52,28 @@ describe('CreateCustomerHandler', () => {
       await expect(controller.create(dto)).resolves.toStrictEqual(
         CustomerDto.fromCustomer(customer),
       );
+    });
+  });
+
+  describe('get()', () => {
+    it('should be return a customer', async () => {
+      const id = 'some-id';
+      const customer = new Customer();
+      customer.dateOfBirth = new Date();
+
+      mockQueryBus.execute.mockResolvedValue(customer);
+
+      await expect(controller.get(id)).resolves.toStrictEqual(
+        CustomerDto.fromCustomer(customer),
+      );
+    });
+
+    it('should throw if no customer found with provided id', async () => {
+      const id = 'some-non-existing-id';
+
+      mockQueryBus.execute.mockResolvedValue(null);
+
+      await expect(controller.get(id)).rejects.toThrow(NotFoundException);
     });
   });
 });
