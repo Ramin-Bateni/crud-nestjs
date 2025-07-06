@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, Unique } from 'typeorm';
 
+@Unique(['firstName', 'lastName', 'dateOfBirth'])
 @Entity()
 export class Customer {
   @PrimaryGeneratedColumn('uuid')
@@ -11,10 +12,11 @@ export class Customer {
   @Column()
   lastName: string;
 
-  @Column()
+  // @Column({ type: 'date' })
+  @Column({ type: 'date' })
   dateOfBirth: Date;
 
-  @Column()
+  @Column({ type: 'varchar', length: 15 })
   phoneNumber: string;
 
   @Column({ unique: true })
