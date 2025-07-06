@@ -2,6 +2,10 @@
 
 Task for interview
 
+I started with basics, set foundations for CQRS and implement the module, then went for separating read and write models.
+
+Also, I'm familiar with frontend development too, but due to full-time job I'm in now, I couldn't put enough time.
+
 ## Project setup
 
 ```bash
