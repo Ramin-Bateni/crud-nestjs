@@ -6,6 +6,7 @@ import { Customer } from '../entities/customer.entity';
 import { CustomerDto } from '../dtos/customer.dto';
 import { NotFoundException } from '@nestjs/common';
 import { UpdateCustomerDto } from '../dtos/update-customer.dto';
+import { DeleteCustomerCommand } from '../commands/delete-customer.command';
 
 describe('CreateCustomerHandler', () => {
   let controller: CustomerController;
@@ -90,6 +91,18 @@ describe('CreateCustomerHandler', () => {
       await expect(controller.update(id, dto)).resolves.toStrictEqual(
         CustomerDto.fromCustomer(customer),
       );
+    });
+  });
+
+  describe('delete()', () => {
+    it('should delete a customer', async () => {
+      const id = 'some-id';
+      const command = new DeleteCustomerCommand(id);
+
+      mockCommandBus.execute.mockResolvedValue(undefined);
+
+      await expect(controller.delete(id)).resolves.toBeUndefined();
+      expect(mockCommandBus.execute).toHaveBeenCalledWith(command);
     });
   });
 });

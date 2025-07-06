@@ -1,7 +1,9 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
+  HttpCode,
   NotFoundException,
   Param,
   Patch,
@@ -15,6 +17,7 @@ import { Customer } from '../entities/customer.entity';
 import { GetCustomerQuery } from '../queries/get-customer.query';
 import { UpdateCustomerDto } from '../dtos/update-customer.dto';
 import { UpdateCustomerCommand } from '../commands/update-customer.command';
+import { DeleteCustomerCommand } from '../commands/delete-customer.command';
 
 @Controller('customers')
 export class CustomerController {
@@ -71,5 +74,13 @@ export class CustomerController {
     >(command);
 
     return CustomerDto.fromCustomer(customer);
+  }
+
+  @Delete(':id')
+  @HttpCode(204)
+  async delete(@Param('id') id: string): Promise<void> {
+    const command = new DeleteCustomerCommand(id);
+
+    await this.commandBus.execute<DeleteCustomerCommand, void>(command);
   }
 }
