@@ -14,7 +14,10 @@
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
-    "test:bdd": "cucumber-js"
+    "test:bdd": "cucumber-js",
+    "migration:generate": "node -r ts-node/register src/scripts/typeorm-generate.ts",
+    "migration:apply": "node -r ts-node/register src/scripts/typeorm-apply.ts",
+    "migration:revert": "node -r ts-node/register src/scripts/typeorm-revert.ts"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
