@@ -12,7 +12,7 @@ export class Customer {
   @Column({ type: 'varchar', length: 64 })
   lastName: string;
 
-  @Column({ type: 'date' })
+  @Column({ type: 'timestamp' })
   dateOfBirth: Date;
 
   @Column({ type: 'varchar', length: 13 })
