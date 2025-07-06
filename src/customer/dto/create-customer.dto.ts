@@ -4,8 +4,28 @@ import {
   IsEmail,
   ValidationOptions,
   registerDecorator,
+  ValidatorConstraint,
+  ValidatorConstraintInterface,
+  // ValidationArguments,
+  Validate,
 } from 'class-validator';
 import { PhoneNumberUtil } from 'google-libphonenumber';
+@ValidatorConstraint({ name: 'IsBankAccountNumber', async: false })
+class IsBankAccountNumberConstraint implements ValidatorConstraintInterface {
+  validate(accountNumber: string) {
+    if (!accountNumber) return false;
+
+    const isNumeric = /^\d+$/.test(accountNumber);
+    const hasValidLength =
+      accountNumber.length >= 8 && accountNumber.length <= 34;
+
+    return isNumeric && hasValidLength;
+  }
+
+  defaultMessage() {
+    return 'Bank account should be numeric and 8-34 digit long';
+  }
+}
 
 export class CreateCustomerDto {
   @IsString()
@@ -25,6 +45,7 @@ export class CreateCustomerDto {
   email: string;
 
   @IsString()
+  @Validate(IsBankAccountNumberConstraint)
   bankAccountNumber: string;
 }
 
