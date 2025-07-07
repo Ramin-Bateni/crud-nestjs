@@ -1,0 +1,60 @@
+services:
+  postgres:
+    image: postgres:latest
+    container_name: task-postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: task
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - task-net
+
+  mongo:
+    image: mongo:6.0.9
+    container_name: task-mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongo
+      MONGO_INITDB_ROOT_PASSWORD: mongo
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - task-net
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: task-app
+    depends_on:
+      - postgres
+      - mongo
+    ports:
+      - "3000:3000"
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASS: postgres
+      DB_NAME: task
+      MONGO_URI: mongodb://mongo:27017/task
+      MONGO_USER: mongo
+      MONGO_PASS: mongo
+      MONGO_AUTH_DB: admin
+    command: ["node", "dist/main.js"]
+    networks:
+      - task-net
+
+volumes:
+  postgres_data:
+  mongo_data:
+
+networks:
+  task-net:
