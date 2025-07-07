@@ -1,15 +1,20 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { getRepositoryToken } from '@nestjs/typeorm';
-import { Customer } from '../entities/customer.entity';
 import { FindCustomerHandler } from './find-customer.handler';
 import { FindCustomerQuery } from '../queries/find-customer.query';
 import { FindCustomerDto } from '../dtos/find-customer.dto';
+import { getModelToken } from '@nestjs/mongoose';
+import { CustomerModel } from '../models/customer.model';
 
 describe('FindCustomerHandler', () => {
   let handler: FindCustomerHandler;
 
-  const mockCustomerRepo = {
-    findAndCount: jest.fn(),
+  const mockLimit = jest.fn();
+  const mockSkip = jest.fn(() => ({ limit: mockLimit }));
+  const mockFind = jest.fn(() => ({ skip: mockSkip }));
+
+  const mockModel = {
+    find: mockFind,
+    countDocuments: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -17,8 +22,8 @@ describe('FindCustomerHandler', () => {
       providers: [
         FindCustomerHandler,
         {
-          provide: getRepositoryToken(Customer),
-          useValue: mockCustomerRepo,
+          provide: getModelToken(CustomerModel.name),
+          useValue: mockModel,
         },
       ],
     }).compile();
@@ -37,9 +42,9 @@ describe('FindCustomerHandler', () => {
     const query = new FindCustomerQuery(dto);
     const data = [];
     const total = 0;
-    const response = [data, total];
 
-    mockCustomerRepo.findAndCount.mockResolvedValue(response);
+    mockLimit.mockResolvedValue(data);
+    mockModel.countDocuments.mockResolvedValue(total);
 
     await expect(handler.execute(query)).resolves.toStrictEqual({
       data,

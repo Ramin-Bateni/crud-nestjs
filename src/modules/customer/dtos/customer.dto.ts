@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Customer } from '../entities/customer.entity';
+import { CustomerModel } from '../models/customer.model';
 
 export class CustomerDto {
   @ApiProperty({
@@ -57,6 +58,18 @@ export class CustomerDto {
     readOnly: true,
   })
   readonly bankAccountNumber: string;
+
+  static fromCustomerModel(customerModel: CustomerModel): CustomerDto {
+    return {
+      id: customerModel.uuid,
+      firstName: customerModel.firstName,
+      lastName: customerModel.lastName,
+      dateOfBirth: customerModel.dateOfBirth.toISOString().split('T')[0],
+      email: customerModel.email,
+      phoneNumber: customerModel.phoneNumber,
+      bankAccountNumber: customerModel.bankAccountNumber,
+    };
+  }
 
   static fromCustomer(customer: Customer): CustomerDto {
     return {

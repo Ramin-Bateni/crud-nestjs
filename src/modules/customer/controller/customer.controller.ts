@@ -32,6 +32,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { ApiPaginatedResponse } from '../../../common/decorators/api-paginated-response.decorator';
+import { CustomerModel } from '../models/customer.model';
 
 @ApiTags('customers')
 @Controller('customers')
@@ -90,12 +91,12 @@ export class CustomerController {
 
     const results = await this.queryBus.execute<
       FindCustomerQuery,
-      PaginatedResult<Customer>
+      PaginatedResult<CustomerModel>
     >(query);
 
     return {
       ...results,
-      data: results.data.map((item) => CustomerDto.fromCustomer(item)),
+      data: results.data.map((item) => CustomerDto.fromCustomerModel(item)),
     };
   }
 
@@ -112,14 +113,14 @@ export class CustomerController {
 
     const customer = await this.queryBus.execute<
       GetCustomerQuery,
-      Customer | null
+      CustomerModel | null
     >(query);
 
     if (!customer) {
       throw new NotFoundException('Customer not found');
     }
 
-    return CustomerDto.fromCustomer(customer);
+    return CustomerDto.fromCustomerModel(customer);
   }
 
   @ApiOperation({

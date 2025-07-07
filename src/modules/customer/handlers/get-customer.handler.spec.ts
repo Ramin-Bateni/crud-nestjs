@@ -1,13 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { getRepositoryToken } from '@nestjs/typeorm';
-import { Customer } from '../entities/customer.entity';
 import { GetCustomerHandler } from './get-customer.handler';
 import { GetCustomerQuery } from '../queries/get-customer.query';
+import { getModelToken } from '@nestjs/mongoose';
+import { CustomerModel } from '../models/customer.model';
 
 describe('GetCustomerHandler', () => {
   let handler: GetCustomerHandler;
 
-  const mockCustomerRepo = {
+  const mockModel = {
     findOne: jest.fn(),
   };
 
@@ -16,8 +16,8 @@ describe('GetCustomerHandler', () => {
       providers: [
         GetCustomerHandler,
         {
-          provide: getRepositoryToken(Customer),
-          useValue: mockCustomerRepo,
+          provide: getModelToken(CustomerModel.name),
+          useValue: mockModel,
         },
       ],
     }).compile();
@@ -34,19 +34,26 @@ describe('GetCustomerHandler', () => {
   it('should return the customer with provided id', async () => {
     const id = 'some-id';
     const query = new GetCustomerQuery(id);
-    const customer = new Customer();
-    customer.id = id;
+    const fakeCustomer = {
+      id,
+      firstName: 'Test',
+      lastName: 'User',
+      dateOfBirth: '1990-01-01',
+      email: 'test@example.com',
+      phoneNumber: '+123456789',
+      bankAccountNumber: 'NL91ABNA0417164300',
+    };
 
-    mockCustomerRepo.findOne.mockResolvedValue(customer);
+    mockModel.findOne.mockResolvedValue(fakeCustomer);
 
-    await expect(handler.execute(query)).resolves.toStrictEqual(customer);
+    await expect(handler.execute(query)).resolves.toStrictEqual(fakeCustomer);
   });
 
   it('should return null if no customer found with provided id', async () => {
     const id = 'some-non-existent-id';
     const query = new GetCustomerQuery(id);
 
-    mockCustomerRepo.findOne.mockResolvedValue(null);
+    mockModel.findOne.mockResolvedValue(null);
 
     await expect(handler.execute(query)).resolves.toStrictEqual(null);
   });

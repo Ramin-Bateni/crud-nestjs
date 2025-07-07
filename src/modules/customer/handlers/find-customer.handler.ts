@@ -1,22 +1,26 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Customer } from '../entities/customer.entity';
-import { Repository } from 'typeorm';
 import { FindCustomerQuery } from '../queries/find-customer.query';
 import { PaginatedResult } from '../../../common/interfaces/paginated-result.interface';
+import { InjectModel } from '@nestjs/mongoose';
+import { CustomerModel } from '../models/customer.model';
+import { Model } from 'mongoose';
 
 @QueryHandler(FindCustomerQuery)
 export class FindCustomerHandler implements IQueryHandler<FindCustomerQuery> {
   constructor(
-    @InjectRepository(Customer)
-    private readonly repo: Repository<Customer>,
+    @InjectModel(CustomerModel.name)
+    private readonly model: Model<CustomerModel>,
   ) {}
 
-  async execute(query: FindCustomerQuery): Promise<PaginatedResult<Customer>> {
-    const [customers, count] = await this.repo.findAndCount({
-      skip: query.dto.skip,
-      take: query.dto.take,
-    });
+  async execute(
+    query: FindCustomerQuery,
+  ): Promise<PaginatedResult<CustomerModel>> {
+    const customers = await this.model
+      .find()
+      .skip(query.dto.skip)
+      .limit(query.dto.take);
+
+    const count = await this.model.countDocuments();
 
     return {
       data: customers,

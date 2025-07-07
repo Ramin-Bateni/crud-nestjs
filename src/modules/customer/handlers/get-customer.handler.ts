@@ -1,20 +1,18 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetCustomerQuery } from '../queries/get-customer.query';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Customer } from '../entities/customer.entity';
-import { Repository } from 'typeorm';
+import { InjectModel } from '@nestjs/mongoose';
+import { CustomerModel } from '../models/customer.model';
+import { Model } from 'mongoose';
 
 @QueryHandler(GetCustomerQuery)
 export class GetCustomerHandler implements IQueryHandler<GetCustomerQuery> {
   constructor(
-    @InjectRepository(Customer)
-    private readonly repo: Repository<Customer>,
+    @InjectModel(CustomerModel.name)
+    private readonly model: Model<CustomerModel>,
   ) {}
 
-  async execute(query: GetCustomerQuery): Promise<Customer | null> {
-    const customer = await this.repo.findOne({
-      where: { id: query.id },
-    });
+  async execute(query: GetCustomerQuery): Promise<CustomerModel | null> {
+    const customer = await this.model.findOne({ uuid: query.id });
 
     return customer;
   }
