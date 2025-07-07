@@ -9,6 +9,7 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { CreateCustomerDto } from '../dtos/create-customer.dto';
@@ -85,7 +86,7 @@ export class CustomerController {
   })
   @Get()
   async find(
-    @Body() dto: FindCustomerDto,
+    @Query() dto: FindCustomerDto,
   ): Promise<PaginatedResult<CustomerDto>> {
     const query = new FindCustomerQuery(dto);
 

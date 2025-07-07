@@ -1,8 +1,11 @@
-import { Given, When, Then, BeforeAll } from '@cucumber/cucumber';
+import { Given, When, Then, BeforeAll, AfterAll } from '@cucumber/cucumber';
 import { expect } from 'chai';
 import * as supertest from 'supertest';
 import { Customer } from '../../src/modules/customer/entities/customer.entity';
 import dataSource from '../../src/scripts/typeorm-data-source';
+import mongoose from 'mongoose';
+import { validateEnv } from '../../src/modules/configuration/configuration.schema';
+import { MongoConfigurationService } from '../../src/modules/configuration/services/mongo-configuration.service';
 
 const API = supertest('http://localhost:3000');
 
@@ -11,7 +14,17 @@ let payload: Record<string, any> = {};
 
 BeforeAll(async () => {
   await dataSource.initialize();
+
+  const env = validateEnv(process.env);
+  const config = new MongoConfigurationService(env);
+
+  await mongoose.connect(config.uri, {
+    auth: { username: config.username, password: config.password },
+    authSource: config.authSource,
+  });
 });
+
+AfterAll(async () => mongoose.disconnect());
 
 Given('the system is running', async () => {
   const res = await API.get('/health').catch(() => null);
@@ -20,6 +33,9 @@ Given('the system is running', async () => {
 
 Given('the database is empty', async () => {
   await dataSource.getRepository(Customer).clear();
+
+  const customerReadCollection = mongoose.connection.collection('customers');
+  await customerReadCollection.deleteMany({});
 });
 
 Given('I have a valid customer payload', () => {
@@ -117,6 +133,17 @@ Given('a customer exists with ID {string}', async (id: string) => {
   customer.bankAccountNumber = 'NL91ABNA0417164300';
 
   await dataSource.getRepository(Customer).save(customer);
+
+  const customerReadCollection = mongoose.connection.collection('customers');
+  await customerReadCollection.insertOne({
+    uuid: customer.id,
+    firstName: customer.firstName,
+    lastName: customer.lastName,
+    dateOfBirth: customer.dateOfBirth,
+    email: customer.email,
+    phoneNumber: customer.phoneNumber,
+    bankAccountNumber: customer.bankAccountNumber,
+  });
 
   const res = await API.get(`/customers/${id}`);
   expect(res.status).to.equal(200);
