@@ -10,9 +10,17 @@ import { GetCustomerHandler } from './handlers/get-customer.handler';
 import { FindCustomerHandler } from './handlers/find-customer.handler';
 import { UpdateCustomerHandler } from './handlers/update-customer.handler';
 import { DeleteCustomerHandler } from './handlers/delete-customer.handler';
+import { MongooseModule } from '@nestjs/mongoose';
+import { CustomerModel, CustomerModelSchema } from './models/customer.model';
 
 @Module({
-  imports: [CqrsModule, TypeOrmModule.forFeature([Customer])],
+  imports: [
+    CqrsModule,
+    TypeOrmModule.forFeature([Customer]),
+    MongooseModule.forFeature([
+      { name: CustomerModel.name, schema: CustomerModelSchema },
+    ]),
+  ],
   controllers: [CustomerController],
   providers: [
     CreateCustomerHandler,
