@@ -13,6 +13,7 @@ import { DeleteCustomerHandler } from './handlers/delete-customer.handler';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CustomerModel, CustomerModelSchema } from './models/customer.model';
 import { CustomerCreatedHandler } from './handlers/customer-created.handler';
+import { CustomerUpdatedHandler } from './handlers/customer-updated.handler';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { CustomerCreatedHandler } from './handlers/customer-created.handler';
     UpdateCustomerHandler,
     DeleteCustomerHandler,
     CustomerCreatedHandler,
+    CustomerUpdatedHandler,
     IsValidPhoneNumber,
     IsValidBankAccount,
   ],
