@@ -37,6 +37,22 @@ export class EnvironmentVariables {
   @IsString()
   @IsNotEmpty()
   DB_NAME: string;
+
+  @IsString()
+  @IsNotEmpty()
+  MONGO_URI: string;
+
+  @IsString()
+  @IsNotEmpty()
+  MONGO_USER: string;
+
+  @IsString()
+  @IsNotEmpty()
+  MONGO_PASS: string;
+
+  @IsString()
+  @IsNotEmpty()
+  MONGO_AUTH_DB: string;
 }
 
 export function validateEnv(env: NodeJS.ProcessEnv): EnvironmentVariables {
@@ -48,6 +64,10 @@ export function validateEnv(env: NodeJS.ProcessEnv): EnvironmentVariables {
     DB_USER: env.DB_USER,
     DB_PASS: env.DB_PASS,
     DB_NAME: env.DB_NAME,
+    MONGO_URI: env.MONGO_URI,
+    MONGO_USER: env.MONGO_USER,
+    MONGO_PASS: env.MONGO_PASS,
+    MONGO_AUTH_DB: env.MONGO_AUTH_DB,
   });
 
   const errors = validateSync(config, {

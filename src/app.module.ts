@@ -6,6 +6,8 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { HealthModule } from './modules/health/health.module';
 import { ConfigurationModule } from './modules/configuration/configuration.module';
 import { DBConfigurationService } from './modules/configuration/services/db-configuration.service';
+import { MongooseModule } from '@nestjs/mongoose';
+import { MongoConfigurationService } from './modules/configuration/services/mongo-configuration.service';
 
 @Module({
   imports: [
@@ -28,6 +30,15 @@ import { DBConfigurationService } from './modules/configuration/services/db-conf
         migrationsTransactionMode: 'each',
         logging: false,
         namingStrategy: new SnakeNamingStrategy(),
+      }),
+    }),
+    MongooseModule.forRootAsync({
+      imports: [ConfigurationModule],
+      inject: [MongoConfigurationService],
+      useFactory: (config: MongoConfigurationService) => ({
+        uri: config.uri,
+        auth: { username: config.username, password: config.password },
+        authSource: config.authSource,
       }),
     }),
     CustomerModule,

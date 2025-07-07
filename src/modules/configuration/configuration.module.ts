@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { AppConfigurationService } from './services/app-configuration.service';
 import { validateEnv } from './configuration.schema';
 import { DBConfigurationService } from './services/db-configuration.service';
+import { MongoConfigurationService } from './services/mongo-configuration.service';
 
 @Module({
   providers: [
@@ -11,7 +12,12 @@ import { DBConfigurationService } from './services/db-configuration.service';
     },
     AppConfigurationService,
     DBConfigurationService,
+    MongoConfigurationService,
   ],
-  exports: [AppConfigurationService, DBConfigurationService],
+  exports: [
+    AppConfigurationService,
+    DBConfigurationService,
+    MongoConfigurationService,
+  ],
 })
 export class ConfigurationModule {}
