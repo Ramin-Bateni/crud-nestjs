@@ -4,6 +4,8 @@ import { CreateCustomerHandler } from './create-customer.handler';
 import { CreateCustomerCommand } from '../commands/create-customer.command';
 import { Customer } from '../entities/customer.entity';
 import { ConflictException } from '@nestjs/common';
+import { EventBus } from '@nestjs/cqrs';
+import { CustomerCreatedEvent } from '../events/customer-created.event';
 
 describe('CreateCustomerHandler', () => {
   let handler: CreateCustomerHandler;
@@ -14,6 +16,10 @@ describe('CreateCustomerHandler', () => {
     save: jest.fn(),
   };
 
+  const mockEventBus = {
+    publish: jest.fn(),
+  };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -21,6 +27,10 @@ describe('CreateCustomerHandler', () => {
         {
           provide: getRepositoryToken(Customer),
           useValue: mockCustomerRepo,
+        },
+        {
+          provide: EventBus,
+          useValue: mockEventBus,
         },
       ],
     }).compile();
@@ -81,5 +91,49 @@ describe('CreateCustomerHandler', () => {
     expect(mockCustomerRepo.findOne).toHaveBeenCalled();
     expect(mockCustomerRepo.create).not.toHaveBeenCalled();
     expect(mockCustomerRepo.save).not.toHaveBeenCalled();
+  });
+
+  it('should publish CustomerCreatedEvent after creating a new customer', async () => {
+    const id = 'some-id';
+    const firstName = 'Jane';
+    const lastName = 'Smith';
+    const dateOfBirth = '1990-01-01';
+    const email = 'jane@example.com';
+    const phoneNumber = '+14155550000';
+    const bankAccountNumber = 'FR7630006000011234567890189';
+
+    const command = new CreateCustomerCommand(
+      firstName,
+      lastName,
+      dateOfBirth,
+      email,
+      phoneNumber,
+      bankAccountNumber,
+    );
+
+    mockCustomerRepo.findOne.mockResolvedValue(null);
+    mockCustomerRepo.save.mockResolvedValue({
+      id,
+      firstName,
+      lastName,
+      dateOfBirth: new Date(dateOfBirth),
+      email,
+      phoneNumber,
+      bankAccountNumber,
+    });
+
+    await handler.execute(command);
+
+    expect(mockEventBus.publish).toHaveBeenCalledWith(
+      new CustomerCreatedEvent(
+        id,
+        firstName,
+        lastName,
+        new Date(dateOfBirth),
+        email,
+        phoneNumber,
+        bankAccountNumber,
+      ),
+    );
   });
 });
