@@ -2,18 +2,19 @@
 
 import { CreateCustomerCommand } from "@/modules/customer/application/commands/impl/create-customer.command";
 import { CreateCustomerCommandHandler } from "@/modules/customer/application/commands/impl/create-customer.command-handler";
-import { ICustomerRepository } from "@/modules/customer/application/interfaces/customer-repository.interface";
+import { CustomerService } from "@/modules/customer/application/services/customer.service";
 import { Customer } from "@/modules/customer/domain/customer.entity";
 
 describe("CreateCustomerCommandHandler", () => {
   let handler: CreateCustomerCommandHandler;
-  let mockRepository: ICustomerRepository;
+  let mockService: CustomerService;
 
   beforeEach(() => {
-    mockRepository = {
+    mockService = {
       create: jest.fn(),
-    };
-    handler = new CreateCustomerCommandHandler(mockRepository);
+    } as unknown as CustomerService;
+
+    handler = new CreateCustomerCommandHandler(mockService);
   });
 
   it("should call repository.create with customer data", async () => {
@@ -29,7 +30,7 @@ describe("CreateCustomerCommandHandler", () => {
     await handler.execute(command);
 
     // I expect to see Emily name in the object to pass to `create`
-    expect(mockRepository.create).toHaveBeenCalledWith(
+    expect(mockService.create).toHaveBeenCalledWith(
       expect.objectContaining({
         firstName: "Emily",
         lastName: "Johnson",
@@ -37,6 +38,6 @@ describe("CreateCustomerCommandHandler", () => {
     );
 
     // I expect to call the `create` method with `Customer` entity
-    expect(mockRepository.create).toHaveBeenCalledWith(expect.any(Customer));
+    expect(mockService.create).toHaveBeenCalledWith(expect.any(Customer));
   });
 });
