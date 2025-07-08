@@ -2,17 +2,17 @@
 
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { CreateCustomerCommand } from "./create-customer.command";
-import { ICustomerRepository } from "@/modules/customer/application/interfaces/customer-repository.interface";
 import { Customer } from "@/modules/customer/domain/customer.entity";
 import { Email } from "@/modules/customer/domain/value-objects/email.vo";
 import { PhoneNumber } from "@/modules/customer/domain/value-objects/phone-number.vo";
 import { BankAccountNumber } from "@/modules/customer/domain/value-objects/bank-account-number.vo";
+import { CustomerService } from "../../services/customer.service";
 
 @CommandHandler(CreateCustomerCommand)
 export class CreateCustomerCommandHandler
   implements ICommandHandler<CreateCustomerCommand>
 {
-  constructor(private readonly repository: ICustomerRepository) {}
+  constructor(private readonly service: CustomerService) {}
 
   async execute(command: CreateCustomerCommand): Promise<void> {
     const customer = new Customer(
@@ -24,6 +24,6 @@ export class CreateCustomerCommandHandler
       new BankAccountNumber(command.bankAccountNumber)
     );
 
-    await this.repository.create(customer);
+    await this.service.create(customer);
   }
 }
