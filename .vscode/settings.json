@@ -1,0 +1,15 @@
+{
+    "cucumberautocomplete.steps": [
+      "tests/features/**/*.steps.ts"
+    ],
+    "cucumberautocomplete.strictGherkinCompletion": true,
+    "cucumberautocomplete.strictGherkinValidation": true,
+    "cucumberautocomplete.smartSnippets": true,
+    "cucumberautocomplete.stepsInvariants": true,
+    "editor.quickSuggestions": {
+      "comments": false,
+      "strings": true,
+      "other": true
+    }
+  }
+  

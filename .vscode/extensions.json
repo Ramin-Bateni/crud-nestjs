@@ -1,0 +1,8 @@
+{
+    "recommendations": [
+        "alexkrechik.cucumberautocomplete",      // پشتیبانی کامل Gherkin
+        "streetsidesoftware.code-spell-checker"  // چک کردن غلط املایی
+    ],
+    "unwantedRecommendations": []
+}
+  
