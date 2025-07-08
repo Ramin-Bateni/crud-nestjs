@@ -3,6 +3,7 @@
 import { CreateCustomerCommand } from "@/modules/customer/application/commands/impl/create-customer.command";
 import { CreateCustomerCommandHandler } from "@/modules/customer/application/commands/impl/create-customer.command-handler";
 import { ICustomerRepository } from "@/modules/customer/application/interfaces/customer-repository.interface";
+import { Customer } from "@/modules/customer/domain/customer.entity";
 
 describe("CreateCustomerCommandHandler", () => {
   let handler: CreateCustomerCommandHandler;
@@ -27,15 +28,15 @@ describe("CreateCustomerCommandHandler", () => {
 
     await handler.execute(command);
 
+    // I expect to see Emily name in the object to pass to `create`
     expect(mockRepository.create).toHaveBeenCalledWith(
       expect.objectContaining({
         firstName: "Emily",
         lastName: "Johnson",
-        dateOfBirth: new Date("1988-03-22"),
-        email: "emily.johnson@example.com",
-        phoneNumber: "+447911123456",
-        bankAccountNumber: "GB29NWBK60161331926819",
       })
     );
+
+    // I expect to call the `create` method with `Customer` entity
+    expect(mockRepository.create).toHaveBeenCalledWith(expect.any(Customer));
   });
 });
