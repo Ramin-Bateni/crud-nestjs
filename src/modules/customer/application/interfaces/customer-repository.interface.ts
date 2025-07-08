@@ -3,5 +3,5 @@
 import { Customer } from "@/modules/customer/domain/customer.entity";
 
 export interface ICustomerRepository {
-  save(customer: Customer): Promise<void>;
+  create(customer: Customer): Promise<void>;
 }

@@ -10,27 +10,31 @@ describe("CreateCustomerCommandHandler", () => {
 
   beforeEach(() => {
     mockRepository = {
-      save: jest.fn(),
+      create: jest.fn(),
     };
     handler = new CreateCustomerCommandHandler(mockRepository);
   });
 
-  it("should call repository.save with customer data", async () => {
+  it("should call repository.create with customer data", async () => {
     const command = new CreateCustomerCommand(
-      "John",
-      "Doe",
-      new Date("1990-01-01"),
-      "+989123456789",
-      "john@example.com",
-      "1234567890123456"
+      "Emily",
+      "Johnson",
+      new Date("1988-03-22"),
+      "+447911123456",
+      "emily.johnson@example.com",
+      "GB29NWBK60161331926819"
     );
 
     await handler.execute(command);
 
-    expect(mockRepository.save).toHaveBeenCalledWith(
+    expect(mockRepository.create).toHaveBeenCalledWith(
       expect.objectContaining({
-        firstName: "John",
-        email: "john@example.com",
+        firstName: "Emily",
+        lastName: "Johnson",
+        dateOfBirth: new Date("1988-03-22"),
+        email: "emily.johnson@example.com",
+        phoneNumber: "+447911123456",
+        bankAccountNumber: "GB29NWBK60161331926819",
       })
     );
   });
