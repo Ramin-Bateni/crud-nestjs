@@ -8,8 +8,8 @@ import {
 import { Customer } from "@/modules/customer/domain/customer.entity";
 
 /**
- * Currently this file seems a tiny service file,
- * I keep it because of comply to clean architecture.
+ * Currently this file seems a tiny and so simple service file,
+ * I keep it because of comply to Clean Architecture and DDD.
  * In the feature, this file can growth...
  */
 @Injectable()
@@ -21,5 +21,9 @@ export class CustomerService {
 
   async create(customer: Customer): Promise<void> {
     await this.repository.create(customer);
+  }
+
+  async findAll(): Promise<Customer[]> {
+    return await this.repository.findAll();
   }
 }

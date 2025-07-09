@@ -6,4 +6,5 @@ export const I_CUSTOMER_REPOSITORY = Symbol("ICustomerRepository");
 
 export interface ICustomerRepository {
   create(customer: Customer): Promise<void>;
+  findAll(): Promise<Customer[]>;
 }
