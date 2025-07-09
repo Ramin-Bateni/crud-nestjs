@@ -1,8 +1,9 @@
 // src/app.module.ts
 import { Module } from "@nestjs/common";
+import { CustomerModule } from "./modules/customer/customer.module";
 
 @Module({
-  imports: [],
+  imports: [CustomerModule],
   controllers: [],
   providers: [],
 })
