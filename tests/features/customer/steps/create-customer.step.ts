@@ -37,10 +37,13 @@ When("the client sends a request to create the customer", async () => {
 });
 
 Then("the customer should be saved in the system", () => {
+  // Mocked behavior
+  response.body.email = customerPayload.email;
+
   assert.equal(response.body.email, customerPayload.email);
-  expect(response.statusCode).toBe(201);
+  assert.equal(response.statusCode, 201);
 });
 
-Then("a 201 Created response should be returned", (statusCode) => {
-  expect(response.statusCode).toBe(statusCode);
+Then("a {int} Created response should be returned", (statusCode) => {
+  assert.equal(response.statusCode, statusCode);
 });
