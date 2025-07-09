@@ -17,7 +17,8 @@ describe("CreateCustomerCommandHandler", () => {
     handler = new CreateCustomerCommandHandler(mockService);
   });
 
-  it("should call repository.create with customer data", async () => {
+  it("should call service.create with customer data", async () => {
+    // Arrange
     const command = new CreateCustomerCommand(
       "Emily",
       "Johnson",
@@ -27,8 +28,10 @@ describe("CreateCustomerCommandHandler", () => {
       "GB29NWBK60161331926819"
     );
 
+    // Act
     await handler.execute(command);
 
+    // Assert
     // I expect to see Emily name in the object to pass to `create`
     expect(mockService.create).toHaveBeenCalledWith(
       expect.objectContaining({
