@@ -1,6 +1,10 @@
 // src/modules/customer/application/services/customer.service.ts
 
-import { ICustomerRepository } from "../interfaces/customer-repository.interface";
+import { Inject, Injectable } from "@nestjs/common";
+import {
+  I_CUSTOMER_REPOSITORY,
+  ICustomerRepository,
+} from "../interfaces/customer-repository.interface";
 import { Customer } from "@/modules/customer/domain/customer.entity";
 
 /**
@@ -8,8 +12,12 @@ import { Customer } from "@/modules/customer/domain/customer.entity";
  * I keep it because of comply to clean architecture.
  * In the feature, this file can growth...
  */
+@Injectable()
 export class CustomerService {
-  constructor(private readonly repository: ICustomerRepository) {}
+  constructor(
+    @Inject(I_CUSTOMER_REPOSITORY)
+    private readonly repository: ICustomerRepository
+  ) {}
 
   async create(customer: Customer): Promise<void> {
     await this.repository.create(customer);
