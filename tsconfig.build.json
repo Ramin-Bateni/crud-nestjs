@@ -1,4 +1,9 @@
 {
-    "extends": "./tsconfig.json",
-    "exclude": ["node_modules", "test", "tests", "**/*.spec.ts"]
-  }
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "declaration": true
+  },
+  "exclude": ["node_modules", "dist", "tests", "**/*.spec.ts", ".vscode", "assets"]
+}
