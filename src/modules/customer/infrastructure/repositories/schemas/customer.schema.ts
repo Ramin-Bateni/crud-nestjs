@@ -24,4 +24,10 @@ export class Customer extends Document {
 
 export const CustomerSchema = SchemaFactory.createForClass(Customer);
 
+CustomerSchema.index(
+  { firstName: 1, lastName: 1, dateOfBirth: 1 },
+  { unique: true, name: "unique-customer_idx" }
+);
+CustomerSchema.index({ email: 1 }, { unique: true, name: "unique-email_idx" });
+
 export type CustomerDocument = Customer & Document;
