@@ -4,6 +4,7 @@ node_modules/
 # Compiled files
 dist/
 build/
+*.tsbuildinfo
 
 # Logs
 npm-debug.log*
