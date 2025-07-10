@@ -12,7 +12,13 @@ import { CreateCustomerCommand } from "@/modules/customer/application/commands/i
 import { CustomerResponseDto } from "./dtos/customer-response.dto";
 import { CreateCustomerRequestDto } from "./dtos/create-customer-request.dto";
 import { Customer as DomainCustomer } from "../domain/customer.entity";
+import {
+  ApiConflictResponse,
+  ApiCreatedResponse,
+  ApiTags,
+} from "@nestjs/swagger";
 
+@ApiTags("customers")
 @Controller("customers")
 export class CustomerController {
   constructor(
@@ -27,6 +33,8 @@ export class CustomerController {
    */
   @Post()
   @HttpCode(HttpStatus.CREATED)
+  @ApiCreatedResponse({ description: "Customer created" })
+  @ApiConflictResponse({ description: "Duplicate customer" })
   async create(
     @Body() customerBody: CreateCustomerRequestDto
   ): Promise<CustomerResponseDto> {
