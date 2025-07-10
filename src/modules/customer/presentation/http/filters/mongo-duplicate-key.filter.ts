@@ -9,22 +9,37 @@ import { MongoServerError } from "mongodb";
 
 @Catch(MongoServerError)
 export class MongoDuplicateKeyFilter implements ExceptionFilter {
-  /* Map Mongo duplicate key (E11000) to HTTP 409 Conflict */
+  /* Map any duplicate key (E11000) to HTTP 409 Conflict with contextual message */
   catch(error: MongoServerError, host: ArgumentsHost): void {
     const ctx = host.switchToHttp();
     const res = ctx.getResponse();
 
     if (error.code === 11000) {
-      /* Build standard NestJS error body */
+      /* Detect which unique index failed */
+      const indexName = this.extractIndexName(error.message);
+      const message =
+        indexName === "unique-email_idx" || "email_1"
+          ? "Duplicate Email"
+          : "Duplicate First name, Last name and Date of birth";
+
       res.status(HttpStatus.CONFLICT).json({
         statusCode: HttpStatus.CONFLICT,
-        message: "duplicate customer",
+        message,
         error: "Conflict",
+        /* optional: duplicate value for debugging */
+        // details: error.keyValue,
       });
       return;
     }
 
-    /* Let other Mongo errors bubble up */
+    /* Unknown Mongo error → propagate */
     throw error;
+  }
+
+  /* Parse index name from error.message */
+  private extractIndexName(msg: string): string | null {
+    /* Example: E11000 duplicate key error collection: db.customers index: unique-email_idx dup key: { email: "foo@bar.com" } */
+    const match = msg.match(/index:\s+([^\s]+)\s/);
+    return match ? match[1] : null;
   }
 }
