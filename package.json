@@ -7,7 +7,7 @@
   },
   "scripts": {
     "start:dev": "nest start --watch",
-    "start:dev:debug": "ts-node-dev --respawn --transpile-only --inspect-brk=9229 -r tsconfig-paths/register src/main.ts",
+    "start:dev:debug": "ts-node-dev --respawn --transpile-only --inspect=9229 -r tsconfig-paths/register src/main.ts",
     "test:unit": "jest --config jest.config.js",
     "test:e2e": "jest --config jest-e2e.json",
     "test:feature": "cucumber-js --require-module ts-node/register --require-module tsconfig-paths/register --require tests/features/**/*.ts tests/features/**/*.feature"
