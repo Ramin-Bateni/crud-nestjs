@@ -1,0 +1,17 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        // one-step launch + debug
+        "type": "node",
+        "request": "launch",
+        "name": "Debug Nest (ts-node-dev)",
+        "runtimeExecutable": "npm",
+        "runtimeArgs": ["run", "start:dev:debug"],
+        "autoAttachChildProcesses": true,
+        "skipFiles": ["<node_internals>/**"],
+        "console": "integratedTerminal",
+        "sourceMaps": true
+      }
+    ]
+  }

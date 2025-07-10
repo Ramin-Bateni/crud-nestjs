@@ -6,8 +6,8 @@
     "name": "Ramin Bateni Parvar"
   },
   "scripts": {
-    "start": "nest start",
     "start:dev": "nest start --watch",
+    "start:dev:debug": "ts-node-dev --respawn --transpile-only --inspect-brk=9229 -r tsconfig-paths/register src/main.ts",
     "test:unit": "jest --config jest.config.js",
     "test:e2e": "jest --config jest-e2e.json",
     "test:feature": "cucumber-js --require-module ts-node/register --require-module tsconfig-paths/register --require tests/features/**/*.ts tests/features/**/*.feature"
@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "@cucumber/cucumber": "^9.2.0",
-    "@nestjs/cli": "^10.0.0",
+    "@nestjs/cli": "^10.4.9",
     "@nestjs/schematics": "^10.0.0",
     "@nestjs/testing": "^10.0.0",
     "@types/jest": "^29.5.14",
@@ -40,6 +40,7 @@
     "supertest": "^6.3.3",
     "ts-jest": "^29.4.0",
     "ts-node": "^10.9.1",
+    "ts-node-dev": "^2.0.0",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.1.6"
   }
