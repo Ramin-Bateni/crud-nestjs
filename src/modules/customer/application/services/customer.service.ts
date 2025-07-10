@@ -1,32 +1,25 @@
-// src/modules/customer/application/services/customer.service.ts
+import { Injectable } from "@nestjs/common";
+import { CustomerRepository } from "../../infrastructure/repositories/customer.repository";
+import { Customer as DomainCustomer } from "../../domain/customer.entity";
 
-import { Inject, Injectable } from "@nestjs/common";
-import {
-  I_CUSTOMER_REPOSITORY,
-  ICustomerRepository,
-} from "../interfaces/customer-repository.interface";
-import { Customer } from "@/modules/customer/domain/customer.entity";
-
-/**
- * Currently this file seems a tiny and so simple service file,
- * I keep it because of comply to Clean Architecture and DDD.
- * In the feature, this file can growth...
- */
 @Injectable()
 export class CustomerService {
-  constructor(
-    @Inject(I_CUSTOMER_REPOSITORY)
-    private readonly repository: ICustomerRepository
-  ) {}
+  constructor(private readonly repo: CustomerRepository) {}
 
-  private customers: Customer[] = []; // TODO: replace with real DB integration
-
-  async create(customer: Customer): Promise<void> {
-    await this.repository.create(customer);
+  /**
+   * Get all customers
+   * @returns
+   */
+  async findAll(): Promise<DomainCustomer[]> {
+    return await this.repo.findAll();
   }
 
-  async findAll(): Promise<Customer[]> {
-    //return await this.repository.findAll();
-    return this.customers; // Temporally read from mock to pass e2e test
+  /**
+   * Create a new customer
+   * @param data customer data
+   * @returns save customer data
+   */
+  async create(data: DomainCustomer): Promise<DomainCustomer> {
+    return await this.repo.create(data);
   }
 }
