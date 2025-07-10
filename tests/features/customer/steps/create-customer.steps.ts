@@ -4,6 +4,8 @@ import request from "supertest";
 import { Test } from "@nestjs/testing";
 import { AppModule } from "@/app.module";
 import { INestApplication } from "@nestjs/common";
+import { getModelToken } from "@nestjs/mongoose";
+import { Customer } from "@/modules/customer/infrastructure/repositories/schemas/customer.schema";
 
 let app: INestApplication;
 let response: request.Response;
@@ -21,6 +23,7 @@ Given("a valid customer with the following data:", async (dataTable) => {
     bankAccountNumber: data.BankAccountNumber,
   };
 
+  // Make app ready to run -----------------------------------
   const moduleRef = await Test.createTestingModule({
     imports: [AppModule],
   }).compile();
@@ -28,6 +31,10 @@ Given("a valid customer with the following data:", async (dataTable) => {
   app = moduleRef.createNestApplication();
 
   await app.init();
+
+  // Remove all old records from DB --------------------------
+  const customerModel = app.get(getModelToken(Customer.name));
+  await customerModel.deleteMany({});
 });
 
 When("the client sends a request to create the customer", async () => {
