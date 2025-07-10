@@ -15,7 +15,7 @@ export class Customer extends Document {
   @Prop({ required: true, unique: true })
   email!: string;
 
-  @Prop({ required: true, unique: true })
+  @Prop({ required: true })
   bankAccountNumber!: string;
 
   @Prop({ required: true })
