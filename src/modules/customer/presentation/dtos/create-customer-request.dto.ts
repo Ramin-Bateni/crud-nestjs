@@ -1,14 +1,26 @@
+import { IsString, IsEmail, IsDateString } from "class-validator";
 import { Customer } from "../../domain/customer.entity";
 
 export class CreateCustomerRequestDto {
-  firstName: string;
-  lastName: string;
-  dateOfBirth: string;
-  phoneNumber: string;
-  email: string;
-  bankAccountNumber: string;
+  @IsString()
+  firstName!: string;
 
-  constructor(domainCustomer: Customer) {
+  @IsString()
+  lastName!: string;
+
+  @IsDateString()
+  dateOfBirth!: string;
+
+  @IsString()
+  phoneNumber!: string;
+
+  @IsEmail()
+  email!: string;
+
+  @IsString()
+  bankAccountNumber!: string;
+
+  fill(domainCustomer: Customer) {
     this.firstName = domainCustomer.firstName;
     this.lastName = domainCustomer.lastName;
     // Format date as YYYY-MM-DD
