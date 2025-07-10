@@ -7,9 +7,11 @@ import {
   Get,
 } from "@nestjs/common";
 import { CommandBus } from "@nestjs/cqrs";
-import { Customer } from "../domain/customer.entity";
 import { CustomerService } from "../application/services/customer.service";
 import { CreateCustomerCommand } from "@/modules/customer/application/commands/impl/create-customer.command";
+import { CustomerResponseDto } from "./dtos/customer-response.dto";
+import { CreateCustomerRequestDto } from "./dtos/create-customer-request.dto";
+import { Customer as DomainCustomer } from "../domain/customer.entity";
 
 @Controller("customers")
 export class CustomerController {
@@ -21,27 +23,45 @@ export class CustomerController {
   /**
    * Create a new customer
    * @param body customer data
-   * @returns
+   * @returns an object contains email of the saved customer
    */
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  async create(@Body() body: any): Promise<{ email: string }> {
-    await this.commandBus.execute(
-      new CreateCustomerCommand(
-        body.firstName,
-        body.lastName,
-        new Date(body.dateOfBirth),
-        body.phoneNumber,
-        body.email,
-        body.bankAccountNumber
-      )
+  async create(
+    @Body() customerBody: CreateCustomerRequestDto
+  ): Promise<CustomerResponseDto> {
+    const createCommand = new CreateCustomerCommand(
+      customerBody.firstName,
+      customerBody.lastName,
+      new Date(customerBody.dateOfBirth),
+      customerBody.phoneNumber,
+      customerBody.email,
+      customerBody.bankAccountNumber
     );
-    return { email: body.email };
+
+    // Execute create command
+    const createdCustomer = await this.commandBus.execute<
+      CreateCustomerCommand,
+      DomainCustomer
+    >(createCommand);
+
+    // Convert domain object to related dto
+    const dto = new CustomerResponseDto(createdCustomer);
+
+    return dto;
   }
 
+  /**
+   * Get all customers
+   * @returns array of customers
+   */
   @Get()
-  async findAll(): Promise<Customer[]> {
-    // Return all customers via service
-    return this.customerService.findAll();
+  async findAll(): Promise<CustomerResponseDto[]> {
+    const domainCustomers = await this.customerService.findAll();
+    const allCustomers = domainCustomers.map(
+      (customer) => new CustomerResponseDto(customer)
+    );
+
+    return allCustomers;
   }
 }
