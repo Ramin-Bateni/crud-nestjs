@@ -2,7 +2,7 @@
 
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { CreateCustomerCommand } from "./create-customer.command";
-import { Customer } from "@/modules/customer/domain/customer.entity";
+import { Customer as DomainCustomer } from "@/modules/customer/domain/customer.entity";
 import { Email } from "@/modules/customer/domain/value-objects/email.vo";
 import { PhoneNumber } from "@/modules/customer/domain/value-objects/phone-number.vo";
 import { BankAccountNumber } from "@/modules/customer/domain/value-objects/bank-account-number.vo";
@@ -14,8 +14,8 @@ export class CreateCustomerCommandHandler
 {
   constructor(private readonly service: CustomerService) {}
 
-  async execute(command: CreateCustomerCommand): Promise<void> {
-    const customer = new Customer(
+  async execute(command: CreateCustomerCommand): Promise<DomainCustomer> {
+    const customer = new DomainCustomer(
       command.firstName,
       command.lastName,
       command.dateOfBirth,
@@ -24,6 +24,6 @@ export class CreateCustomerCommandHandler
       new BankAccountNumber(command.bankAccountNumber)
     );
 
-    await this.service.create(customer);
+    return await this.service.create(customer);
   }
 }
