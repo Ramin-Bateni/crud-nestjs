@@ -6,6 +6,7 @@ import { Test } from "@nestjs/testing";
 import { AppModule } from "@/app.module";
 import { getModelToken } from "@nestjs/mongoose";
 import { Customer } from "@/modules/customer/infrastructure/repositories/schemas/customer.schema";
+import { MongoDuplicateKeyFilter } from "@/modules/customer/presentation/http/filters/mongo-duplicate-key.filter";
 
 let app: INestApplication;
 let response: request.Response;
@@ -17,6 +18,10 @@ Given("the following customer already exists", async function (dataTable: any) {
     imports: [AppModule],
   }).compile();
   app = moduleRef.createNestApplication();
+
+  // To convert DB duplication error to HTTP 409
+  app.useGlobalFilters(new MongoDuplicateKeyFilter());
+
   await app.init();
 
   // Remove all old records from DB --------------------------
@@ -35,8 +40,8 @@ Given("the following customer already exists", async function (dataTable: any) {
   // prepare duplicate payload (change only unique fields NOT in composite key)
   duplicatePayload = {
     ...customer,
-    email: "other@example.com",
-    bankAccountNumber: "GB00BARC00000000000000",
+    email: "john.duplicate@example.com",
+    bankAccountNumber: "GB11BARC20040199999999",
   };
 });
 
@@ -54,13 +59,14 @@ When(
   }
 );
 
-Then("the API should respond with status 409", function () {
-  expect(response.status).to.equal(409);
+Then("the API should respond with status {int}", function (statusCode: number) {
+  expect(response.status).to.equal(statusCode);
 });
+
 Then(
-  `the error message should contain "duplicate customer"`,
-  async function () {
-    expect(response.body.message).to.contain("duplicate customer");
+  `the duplication error message should contain {string}`,
+  async function (msg: string) {
+    expect(response.body.message).to.contain(msg);
 
     await app.close();
   }

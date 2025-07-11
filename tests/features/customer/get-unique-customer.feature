@@ -9,4 +9,4 @@ Feature: Get Unique Customers
     When I try to create another customer with same firstName, lastName and dateOfBirth
 
     Then the API should respond with status 409
-    And the error message should contain "duplicate customer"
+    And the duplication error message should contain "Duplicate First name, Last name and Date of birth"
