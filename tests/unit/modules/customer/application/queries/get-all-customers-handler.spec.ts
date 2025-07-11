@@ -1,68 +1,71 @@
-// tests/unit/modules/customer/application/commands/create-customer.command-handler.spec.ts
-import { GetAllCustomersQuery } from "@/modules/customer/application/queries/impl/get-all-customers.query";
-import { GetAllCustomersQueryHandler } from "@/modules/customer/application/queries/impl/get-all-customers.query-handler";
-import { CustomerService } from "@/modules/customer/application/services/customer.service";
+// tests/unit/modules/customer/application/queries/get-all-customers-handler.spec.ts
 import { Test, TestingModule } from "@nestjs/testing";
+import { CqrsModule } from "@nestjs/cqrs";
+import { GetAllCustomersQuery } from "@/modules/customer/application/queries/impl/get-all-customers.query";
+import {
+  I_CUSTOMER_REPOSITORY,
+  ICustomerRepository,
+} from "@/modules/customer/domain/interfaces/customer-repository.interface";
+import { GetAllCustomersQueryHandler } from "@/modules/customer/application/queries/impl/get-all-customers.query-handler";
+import { Customer } from "@/modules/customer/domain/customer.entity";
 
 describe("GetAllCustomersQueryHandler", () => {
   let handler: GetAllCustomersQueryHandler;
-  let service: CustomerService;
+  let repo: jest.Mocked<ICustomerRepository>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [CqrsModule], // CQRS providers
       providers: [
         GetAllCustomersQueryHandler,
         {
-          provide: CustomerService,
-          useValue: { findAll: jest.fn() },
+          provide: I_CUSTOMER_REPOSITORY, // repository token
+          useValue: { findAll: jest.fn() }, // mocked repository
         },
       ],
     }).compile();
 
-    handler = module.get<GetAllCustomersQueryHandler>(
-      GetAllCustomersQueryHandler
-    );
-    service = module.get<CustomerService>(CustomerService);
+    handler = module.get(GetAllCustomersQueryHandler);
+    repo = module.get(I_CUSTOMER_REPOSITORY);
   });
 
-  it("should call service.findAll and return all customers", async () => {
+  it("should call repository.findAll and return all customers", async () => {
     // Arrange
-    const customers = [{ id: "1" }, { id: "2" }];
-
-    (service.findAll as jest.Mock).mockResolvedValue(customers);
+    const customers = [
+      { firstName: "a" },
+      { firstName: "b" },
+    ] as unknown as Customer[];
+    repo.findAll.mockResolvedValue(customers);
 
     // Act
     const result = await handler.execute(new GetAllCustomersQuery());
 
     // Assert
     expect(result).toEqual(customers);
-    expect(service.findAll).toHaveBeenCalledTimes(1);
+    expect(repo.findAll).toHaveBeenCalledTimes(1);
   });
 
-  // Test when service returns empty list
-  it("should return empty array if no customers", async () => {
+  it("should return empty array if no customers are found", async () => {
     // Arrange
-    (service.findAll as jest.Mock).mockResolvedValue([]);
+    repo.findAll.mockResolvedValue([]);
 
     // Act
     const result = await handler.execute(new GetAllCustomersQuery());
 
     // Assert
     expect(result).toEqual([]);
-    expect(service.findAll).toHaveBeenCalledTimes(1);
+    expect(repo.findAll).toHaveBeenCalledTimes(1);
   });
 
-  // Test when service throws an error
-  it("should throw if service throws", async () => {
+  it("should throw if repository throws", async () => {
     // Arrange
-    const ERROR_MSG = "Service error";
-    const error = new Error(ERROR_MSG);
-    (service.findAll as jest.Mock).mockRejectedValue(error);
+    const error = new Error("repository error");
+    repo.findAll.mockRejectedValue(error);
 
-    // Act & Assert
+    // Act and Assert
     await expect(handler.execute(new GetAllCustomersQuery())).rejects.toThrow(
-      ERROR_MSG
+      "repository error"
     );
-    expect(service.findAll).toHaveBeenCalledTimes(1);
+    expect(repo.findAll).toHaveBeenCalledTimes(1);
   });
 });
