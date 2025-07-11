@@ -6,25 +6,15 @@ import {
   HttpStatus,
   Get,
 } from "@nestjs/common";
-import { CommandBus } from "@nestjs/cqrs";
 import { CustomerService } from "../application/services/customer.service";
-import { CreateCustomerCommand } from "@/modules/customer/application/commands/impl/create-customer.command";
 import { CustomerResponseDto } from "./dtos/customer-response.dto";
 import { CreateCustomerRequestDto } from "./dtos/create-customer-request.dto";
-import { Customer as DomainCustomer } from "../domain/customer.entity";
-import {
-  ApiConflictResponse,
-  ApiCreatedResponse,
-  ApiTags,
-} from "@nestjs/swagger";
+import { ApiCreatedResponse, ApiTags } from "@nestjs/swagger";
 
 @ApiTags("customers")
 @Controller("customers")
 export class CustomerController {
-  constructor(
-    private readonly commandBus: CommandBus,
-    private readonly customerService: CustomerService
-  ) {}
+  constructor(private readonly customerService: CustomerService) {}
 
   /**
    * Create a new customer
@@ -34,29 +24,12 @@ export class CustomerController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @ApiCreatedResponse({ description: "Customer created" })
-  @ApiConflictResponse({ description: "Duplicate customer" })
   async create(
-    @Body() customerBody: CreateCustomerRequestDto
+    @Body() reqDto: CreateCustomerRequestDto
   ): Promise<CustomerResponseDto> {
-    const createCommand = new CreateCustomerCommand(
-      customerBody.firstName,
-      customerBody.lastName,
-      new Date(customerBody.dateOfBirth),
-      customerBody.phoneNumber,
-      customerBody.email,
-      customerBody.bankAccountNumber
-    );
+    const respDto = this.customerService.create(reqDto);
 
-    // Execute create command
-    const createdCustomer = await this.commandBus.execute<
-      CreateCustomerCommand,
-      DomainCustomer
-    >(createCommand);
-
-    // Convert domain object to related dto
-    const dto = new CustomerResponseDto(createdCustomer);
-
-    return dto;
+    return respDto;
   }
 
   /**
@@ -65,11 +38,8 @@ export class CustomerController {
    */
   @Get()
   async findAll(): Promise<CustomerResponseDto[]> {
-    const domainCustomers = await this.customerService.findAll();
-    const allCustomers = domainCustomers.map(
-      (customer) => new CustomerResponseDto(customer)
-    );
+    const customers = await this.customerService.findAll();
 
-    return allCustomers;
+    return customers;
   }
 }
