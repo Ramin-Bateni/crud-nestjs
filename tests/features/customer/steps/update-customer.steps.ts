@@ -30,7 +30,7 @@ Given("an existing customer for update:", async function (table) {
 });
 
 When(
-  "I patch the customer with new phoneNumber {string}",
+  "I update the customer with new phoneNumber {string}",
   async function (newPhone: string) {
     const updateDto = { phoneNumber: newPhone };
 
@@ -41,14 +41,14 @@ When(
 );
 
 Then(
-  "the API should respond with status {int} for update",
+  "after customer update, the API should respond with status {int}",
   function (status: number) {
     expect(updateResponse.status).to.equal(status);
   }
 );
 
 Then(
-  "the customer phoneNumber should be {string}",
+  "the customer's phoneNumber should be {string}",
   async function (expectedPhone: string) {
     const res = await request(app.getHttpServer())
       .get(`/customers/${originalCustomer.id}`)

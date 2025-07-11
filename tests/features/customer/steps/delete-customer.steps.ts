@@ -36,13 +36,17 @@ When("I delete the customer", async function () {
 });
 
 Then(
-  "the API should respond with status {int} for delete",
+  "after customer delete, the API should respond with status {int}",
   function (status: number) {
     expect(deleteResponse.status).to.equal(status);
   }
 );
 
-Then("the customer should not exist anymore", async function () {
+Then("the error message should contain {string}", function (msg: string) {
+  expect(deleteResponse.body.message).to.contain(msg);
+});
+
+Then("the customer should no longer exist", async function () {
   await request(app.getHttpServer())
     .get(`/customers/${customerId}`)
     .expect(404);
