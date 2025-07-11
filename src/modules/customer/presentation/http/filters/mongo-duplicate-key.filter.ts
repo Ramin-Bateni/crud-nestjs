@@ -18,7 +18,7 @@ export class MongoDuplicateKeyFilter implements ExceptionFilter {
       /* Detect which unique index failed */
       const indexName = this.extractIndexName(error.message);
       const message =
-        indexName === "unique-email_idx" || "email_1"
+        indexName === "unique-email_idx" || indexName === "email_1"
           ? "Duplicate Email"
           : "Duplicate First name, Last name and Date of birth";
 
