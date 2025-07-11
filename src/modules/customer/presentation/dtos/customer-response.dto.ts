@@ -13,7 +13,7 @@ export class CustomerResponseDto {
     this.lastName = domainCustomer.lastName;
     // Format date as YYYY-MM-DD
     this.dateOfBirth = domainCustomer.dateOfBirth.toISOString().split("T")[0];
-    this.phoneNumber = domainCustomer.phoneNumber.toString();
+    this.phoneNumber = domainCustomer.phoneNumber.getValue().toString();
     this.email = domainCustomer.email.getValue();
     this.bankAccountNumber = domainCustomer.bankAccountNumber.getValue();
   }
