@@ -1,10 +1,11 @@
 // tests/features/customer/steps/delete-customer.steps.ts
-import { Given, When, Then } from "@cucumber/cucumber";
+import { Given, When, Then, AfterAll } from "@cucumber/cucumber";
 import { INestApplication } from "@nestjs/common";
 import { Test } from "@nestjs/testing";
 import request from "supertest";
 import { expect } from "chai";
 import { AppModule } from "../../../../src/app.module";
+import { CustomWorld } from "tests/support/custom-world";
 
 let app: INestApplication;
 
@@ -50,6 +51,4 @@ Then("the customer should no longer exist", async function () {
   await request(app.getHttpServer())
     .get(`/customers/${customerId}`)
     .expect(404);
-
-  await app.close();
 });

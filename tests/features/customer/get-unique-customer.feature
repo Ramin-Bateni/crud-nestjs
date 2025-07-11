@@ -1,4 +1,4 @@
-Feature: Get Unique Customers
+Feature: Unique Customers
 
   Scenario: Prevent duplicate customer by firstName + lastName + dateOfBirth
 

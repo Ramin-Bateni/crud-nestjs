@@ -1,10 +1,11 @@
 // tests/features/customer/steps/update-customer.steps.ts
-import { Given, When, Then } from "@cucumber/cucumber";
+import { Given, When, Then, AfterAll } from "@cucumber/cucumber";
 import { INestApplication } from "@nestjs/common";
 import { Test } from "@nestjs/testing";
 import request from "supertest";
 import { expect } from "chai";
 import { AppModule } from "../../../../src/app.module";
+import { CustomWorld } from "tests/support/custom-world";
 
 let app: INestApplication;
 
@@ -55,7 +56,5 @@ Then(
       .expect(200);
 
     expect(res.body.phoneNumber).to.equal(expectedPhone);
-
-    await app.close();
   }
 );

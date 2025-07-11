@@ -1,5 +1,5 @@
 // tests/features/customer/steps/get-all-customers.steps.ts
-import { Given, When, Then } from "@cucumber/cucumber";
+import { Given, When, Then, AfterAll } from "@cucumber/cucumber";
 import { INestApplication } from "@nestjs/common";
 import { Test } from "@nestjs/testing";
 import request from "supertest";
@@ -8,6 +8,7 @@ import { expect } from "chai";
 import { AppModule } from "../../../../src/app.module";
 import { Customer } from "@/modules/customer/infrastructure/repositories/schemas/customer.schema";
 import { getModelToken } from "@nestjs/mongoose";
+import { CustomWorld } from "tests/support/custom-world";
 
 let app: INestApplication;
 let exampleCustomers: any[];
@@ -45,6 +46,4 @@ When("I send a GetAllCustomersQuery", async function () {
 
 Then("I should receive a list of all customers", async function () {
   expect(response.body).to.deep.equal(exampleCustomers);
-
-  await app.close();
 });
