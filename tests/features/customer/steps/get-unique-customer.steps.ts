@@ -57,6 +57,11 @@ When(
 Then("the API should respond with status 409", function () {
   expect(response.status).to.equal(409);
 });
-Then(`the error message should contain "duplicate customer"`, function () {
-  expect(response.body.message).to.contain("duplicate customer");
-});
+Then(
+  `the error message should contain "duplicate customer"`,
+  async function () {
+    expect(response.body.message).to.contain("duplicate customer");
+
+    await app.close();
+  }
+);
