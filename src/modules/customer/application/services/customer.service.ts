@@ -5,6 +5,7 @@ import { GetAllCustomersQuery } from "../queries/impl/get-all-customers.query";
 import { CreateCustomerCommand } from "../commands/impl/create-customer.command";
 import { CreateCustomerRequestDto } from "../../presentation/dtos/create-customer-request.dto";
 import { CustomerResponseDto } from "../../presentation/dtos/customer-response.dto";
+import { Customer as DomainCustomer } from "../../domain/customer.entity";
 
 @Injectable()
 export class CustomerService {
@@ -17,13 +18,25 @@ export class CustomerService {
    * Read side – fetch all customers via QueryBus
    * ------------------------------------------------------------------ */
   async findAll(): Promise<CustomerResponseDto[]> {
-    return this.queryBus.execute(new GetAllCustomersQuery());
+    // Use queryBus
+    const domainCustomers = await this.queryBus.execute<
+      GetAllCustomersQuery,
+      DomainCustomer[]
+    >(new GetAllCustomersQuery());
+
+    // Map domain object to dto
+    const respDto = domainCustomers.map(
+      (domainCustomer) => new CustomerResponseDto(domainCustomer)
+    );
+
+    return respDto;
   }
 
   /* ------------------------------------------------------------------
    * Write side – create customer via CommandBus
    * ------------------------------------------------------------------ */
   async create(dto: CreateCustomerRequestDto): Promise<CustomerResponseDto> {
+    // Create customer command from dto
     const cmd = new CreateCustomerCommand(
       dto.firstName,
       dto.lastName,
@@ -32,6 +45,16 @@ export class CustomerService {
       dto.email,
       dto.bankAccountNumber
     );
-    return this.commandBus.execute(cmd);
+
+    // Use commandBus
+    const domainCustomer = await this.commandBus.execute<
+      CreateCustomerCommand,
+      DomainCustomer
+    >(cmd);
+
+    // Map domain object to dto
+    const respDto = new CustomerResponseDto(domainCustomer);
+
+    return respDto;
   }
 }
