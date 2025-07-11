@@ -14,6 +14,7 @@ import { CustomerService } from "./application/services/customer.service";
 import { GetAllCustomersQueryHandler } from "./application/queries/impl/get-all-customers.query-handler";
 // Presentation layer
 import { CustomerController } from "./presentation/customer.controller";
+import { I_CUSTOMER_REPOSITORY } from "./domain/interfaces/customer-repository.interface";
 
 @Module({
   imports: [
@@ -27,6 +28,10 @@ import { CustomerController } from "./presentation/customer.controller";
     GetAllCustomersQueryHandler,
     CustomerRepository,
     CustomerService,
+    {
+      provide: I_CUSTOMER_REPOSITORY,
+      useClass: CustomerRepository,
+    },
   ],
   exports: [CustomerService, CustomerRepository],
   controllers: [CustomerController],
