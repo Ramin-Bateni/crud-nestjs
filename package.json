@@ -10,7 +10,7 @@
     "start:dev:debug": "ts-node-dev --respawn --transpile-only --inspect=9229 -r tsconfig-paths/register src/main.ts",
     "test:unit": "jest --config jest.config.js",
     "test:e2e": "jest --config jest-e2e.json",
-    "test:feature": "cucumber-js --require-module ts-node/register --require-module tsconfig-paths/register --require tests/features/**/*.ts tests/features/**/*.feature"
+    "test:bdd": "cucumber-js"
   },
   "dependencies": {
     "@nestjs/common": "^10.4.19",
