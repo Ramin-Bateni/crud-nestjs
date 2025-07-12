@@ -43,9 +43,9 @@ export class CustomerRepository {
       firstName: data.firstName,
       lastName: data.lastName,
       dateOfBirth: data.dateOfBirth,
-      phoneNumber: data.phoneNumber?.getValue(),
-      email: data.email?.getValue(),
-      bankAccountNumber: data.bankAccountNumber?.getValue(),
+      phoneNumber: data.phoneNumber.getValue(),
+      email: data.email.getValue(),
+      bankAccountNumber: data.bankAccountNumber.getValue(),
     };
 
     const created = new this.customerModel(toSave);
@@ -61,7 +61,11 @@ export class CustomerRepository {
   async findByEmail(email: string): Promise<DomainCustomer | null> {
     const customer = await this.customerModel.findOne({ email }).lean();
 
-    return this.customerToDomainCustomer(customer?.toObject());
+    if (!customer) {
+      return null;
+    }
+
+    return this.customerToDomainCustomer(customer);
   }
 
   /**
@@ -95,11 +99,11 @@ export class CustomerRepository {
    */
   async deleteByEmail(email: string): Promise<boolean> {
     const { deletedCount } = await this.customerModel.deleteOne({ email });
+
     return deletedCount === 1;
   }
 
   customerToDomainCustomer(customer: Customer): DomainCustomer {
-    console.log("Phoneeeeeeeeee: ", customer.phoneNumber);
     return new DomainCustomer(
       customer.firstName,
       customer.lastName,
