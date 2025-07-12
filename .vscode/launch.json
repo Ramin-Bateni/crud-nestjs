@@ -12,6 +12,16 @@
         "skipFiles": ["<node_internals>/**"],
         "console": "integratedTerminal",
         "sourceMaps": true
-      }
+      },
+      {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug BDD",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "test:bdd", "-- tests/features/update-customer.feature"],
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "skipFiles": ["<node_internals>/**"]
+    }
     ]
   }
