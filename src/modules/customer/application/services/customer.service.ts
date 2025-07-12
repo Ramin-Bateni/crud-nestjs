@@ -4,8 +4,11 @@ import { CommandBus, QueryBus } from "@nestjs/cqrs";
 import { GetAllCustomersQuery } from "../queries/impl/get-all-customers.query";
 import { CreateCustomerCommand } from "../commands/impl/create-customer.command";
 import { CreateCustomerRequestDto } from "../../presentation/dtos/create-customer-request.dto";
-import { CustomerResponseDto } from "../../presentation/dtos/customer-response.dto";
+import { CustomerResponseDto } from "../../presentation/dtos/customer.response.dto";
 import { Customer as DomainCustomer } from "../../domain/customer.entity";
+import { UpdateCustomerCommand } from "../commands/impl/update-customer.command";
+import { DeleteCustomerCommand } from "../commands/impl/delete-customer.command";
+import { UpdateCustomerRequestDto } from "../../presentation/dtos/update-customer.request.dto";
 
 @Injectable()
 export class CustomerService {
@@ -14,9 +17,10 @@ export class CustomerService {
     private readonly queryBus: QueryBus
   ) {}
 
-  /* ------------------------------------------------------------------
-   * Read side – fetch all customers via QueryBus
-   * ------------------------------------------------------------------ */
+  /**
+   * fetch all customers via QueryBus
+   * @returns customers array
+   */
   async findAll(): Promise<CustomerResponseDto[]> {
     // Use queryBus
     const domainCustomers = await this.queryBus.execute<
@@ -32,9 +36,11 @@ export class CustomerService {
     return respDto;
   }
 
-  /* ------------------------------------------------------------------
-   * Write side – create customer via CommandBus
-   * ------------------------------------------------------------------ */
+  /**
+   * Create a new customer
+   * @param dto new customer data
+   * @returns created customer
+   */
   async create(dto: CreateCustomerRequestDto): Promise<CustomerResponseDto> {
     // Create customer command from dto
     const cmd = new CreateCustomerCommand(
@@ -56,5 +62,24 @@ export class CustomerService {
     const respDto = new CustomerResponseDto(domainCustomer);
 
     return respDto;
+  }
+
+  /**
+   * Update a customer
+   * @param email customer email
+   * @param dto customer data to change
+   * @returns
+   */
+  async update(email: string, dto: UpdateCustomerRequestDto) {
+    return await this.commandBus.execute(new UpdateCustomerCommand(email, dto));
+  }
+
+  /**
+   * Delete a customer
+   * @param email customer email
+   * @returns
+   */
+  async delete(email: string) {
+    return await this.commandBus.execute(new DeleteCustomerCommand(email));
   }
 }
