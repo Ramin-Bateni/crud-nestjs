@@ -1,12 +1,14 @@
 Feature: Unique Customer Emails
 
+  Background:
+    Given the following customers already exists
+      | FirstName | LastName  | DateOfBirth| PhoneNumber    | Email                     | BankAccountNumber           |
+      | Alexander | Hamilton  | 1982-01-01 | +447911123456  | alex.hamilton@example.com | GB82WEST12345698765432      |
+      | John      | Doe       | 1990-05-15 | +4915112345678 | john.doe@example.com      | DE89370400440532013000      |
+      | Maria     | Silva     | 1985-07-20 | +5511998765432 | maria.silva@example.com   | BR1500000000000010932840814 |
+      | Pierre    | Dupont    | 1970-02-14 | +33612345678   | pierre.dupont@example.fr  | FR7630006000011234567890189 |
+      
   Scenario: Prevent duplicate customer email
-
-    Given the following customer already exists
-      | firstName | lastName | dateOfBirth | phoneNumber  | email                  | bankAccountNumber           |
-      | John      | Doe      | 1990-05-15  | +447911123456| john.doe@example.com   | GB11BARC20040155555555      |
-
     When I try to create another customer with same email
-
-    Then the API should respond with status 409 .unique-customer-emails
+    Then the API should respond with status 409
     And the duplication error message should contain "Duplicate Email"

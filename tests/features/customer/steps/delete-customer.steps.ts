@@ -1,19 +1,29 @@
 // tests/features/customer/steps/delete-customer.steps.ts
-import { Given, When, Then, AfterAll } from "@cucumber/cucumber";
+
+import { Given, When, Then, After } from "@cucumber/cucumber";
 import { INestApplication } from "@nestjs/common";
 import { Test } from "@nestjs/testing";
 import request from "supertest";
 import { expect } from "chai";
 import { AppModule } from "../../../../src/app.module";
-import { CustomWorld } from "tests/support/custom-world";
+import { flatCustomer } from "tests/support/custom-world";
 
 let app: INestApplication;
 
-let customerId: string;
+let customerPayload: flatCustomer;
 let deleteResponse: request.Response;
 
-Given("an existing customer for delete:", async function (table) {
-  const payload = table.hashes()[0];
+Given("an existing customer for delete", async function (table) {
+  const data = table.hashes()[0];
+
+  customerPayload = {
+    firstName: data.FirstName,
+    lastName: data.LastName,
+    dateOfBirth: data.DateOfBirth,
+    phoneNumber: data.PhoneNumber,
+    email: data.Email,
+    bankAccountNumber: data.BankAccountNumber,
+  };
 
   const moduleRef = await Test.createTestingModule({
     imports: [AppModule],
@@ -24,15 +34,13 @@ Given("an existing customer for delete:", async function (table) {
 
   const res = await request(app.getHttpServer())
     .post("/customers")
-    .send(payload)
+    .send(customerPayload)
     .expect(201);
-
-  customerId = res.body.id;
 });
 
 When("I delete the customer", async function () {
   deleteResponse = await request(app.getHttpServer()).delete(
-    `/customers/${customerId}`
+    `/customers/${customerPayload.email}`
   );
 });
 
@@ -43,12 +51,14 @@ Then(
   }
 );
 
-Then("the error message should contain {string}", function (msg: string) {
-  expect(deleteResponse.body.message).to.contain(msg);
-});
-
 Then("the customer should no longer exist", async function () {
   await request(app.getHttpServer())
-    .get(`/customers/${customerId}`)
+    .get(`/customers/${customerPayload.email}`)
     .expect(404);
+});
+
+After(() => {
+  if (app) {
+    app.close();
+  }
 });

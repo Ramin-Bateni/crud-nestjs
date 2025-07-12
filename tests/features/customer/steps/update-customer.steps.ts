@@ -1,42 +1,43 @@
 // tests/features/customer/steps/update-customer.steps.ts
-import { Given, When, Then, AfterAll } from "@cucumber/cucumber";
+
+import { Given, When, Then, After } from "@cucumber/cucumber";
 import { INestApplication } from "@nestjs/common";
 import { Test } from "@nestjs/testing";
 import request from "supertest";
 import { expect } from "chai";
-import { AppModule } from "../../../../src/app.module";
+import { AppModule } from "@/app.module";
 import { CustomWorld } from "tests/support/custom-world";
 
-let app: INestApplication;
+//let app: INestApplication;
 
-let originalCustomer: any;
+//let originalCustomer: any;
 let updateResponse: request.Response;
 
-Given("an existing customer for update:", async function (table) {
-  originalCustomer = table.hashes()[0];
+// Given("an existing customer for update:", async function (table) {
+//   originalCustomer = table.hashes()[0];
 
-  const moduleRef = await Test.createTestingModule({
-    imports: [AppModule],
-  }).compile();
+//   const moduleRef = await Test.createTestingModule({
+//     imports: [AppModule],
+//   }).compile();
 
-  app = moduleRef.createNestApplication();
-  await app.init();
+//   app = moduleRef.createNestApplication();
+//   await app.init();
 
-  const res = await request(app.getHttpServer())
-    .post("/customers")
-    .send(originalCustomer)
-    .expect(201);
+//   const res = await request(app.getHttpServer())
+//     .post("/customers")
+//     .send(originalCustomer)
+//     .expect(201);
 
-  originalCustomer.id = res.body.id;
-});
+//   originalCustomer.email = res.body.email;
+// });
 
 When(
-  "I update the customer with new phoneNumber {string}",
-  async function (newPhone: string) {
+  "I update first customer with new phoneNumber {string}",
+  async function (this: CustomWorld, newPhone: string) {
     const updateDto = { phoneNumber: newPhone };
 
-    updateResponse = await request(app.getHttpServer())
-      .put(`/customers/${originalCustomer.id}`)
+    updateResponse = await request(this.app.getHttpServer())
+      .put(`/customers/${this.firstCustomer.email}`)
       .send(updateDto);
   }
 );
@@ -50,11 +51,18 @@ Then(
 
 Then(
   "the customer's phoneNumber should be {string}",
-  async function (expectedPhone: string) {
-    const res = await request(app.getHttpServer())
-      .get(`/customers/${originalCustomer.id}`)
+  async function (this: CustomWorld, expectedPhone: string) {
+    const encoded = encodeURIComponent(this.firstCustomer.email);
+    const res = await request(this.app.getHttpServer())
+      .get(`/customers/${encoded}`)
       .expect(200);
 
     expect(res.body.phoneNumber).to.equal(expectedPhone);
   }
 );
+
+// After(() => {
+//   if (app) {
+//     app.close();
+//   }
+// });

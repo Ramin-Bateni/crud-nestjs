@@ -1,4 +1,4 @@
-import { Given, When, Then } from "@cucumber/cucumber";
+import { Given, When, Then, After } from "@cucumber/cucumber";
 import { strict as assert } from "assert";
 import request from "supertest";
 import { Test } from "@nestjs/testing";
@@ -53,4 +53,10 @@ Then("the customer should be saved in the system", () => {
 
 Then("a {int} Created response should be returned", (statusCode) => {
   assert.equal(response.statusCode, statusCode);
+});
+
+After(() => {
+  if (app) {
+    app.close();
+  }
 });

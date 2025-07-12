@@ -8,6 +8,6 @@ Feature: Customer Queries
       | Maria     | Silva     | 1985-07-20 | +5511998765432 | maria.silva@example.com   | BR1500000000000010932840814 |
       | Pierre    | Dupont    | 1970-02-14 | +33612345678   | pierre.dupont@example.fr  | FR7630006000011234567890189 |
 
-  Scenario Outline: Fetch all customers
-    When I send a GetAllCustomersQuery
-    Then I should receive a list of all customers
+  Scenario Outline: Fetch a customer by email
+    When I send a GetCustomerByEmailQuery by first exist record email
+    Then I should receive the customer info
