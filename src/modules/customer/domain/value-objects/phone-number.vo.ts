@@ -1,11 +1,11 @@
 // phone-number.vo.ts
 
-import { parsePhoneNumberFromString } from "libphonenumber-js";
+import { parsePhoneNumberFromString } from "libphonenumber-js/max";
 
 export class PhoneNumber {
   constructor(private readonly value: string) {
     if (!PhoneNumber.isValid(value)) {
-      throw new Error("Invalid mobile phone number");
+      throw new Error(`Invalid mobile phone number: ${value}`);
     }
   }
 
