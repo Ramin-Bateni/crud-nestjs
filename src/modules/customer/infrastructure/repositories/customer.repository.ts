@@ -52,13 +52,61 @@ export class CustomerRepository {
     // Save Customer
     await created.save();
 
+    return this.customerToDomainCustomer(created);
+  }
+
+  /**
+   * Find a customer by email
+   */
+  async findByEmail(email: string): Promise<DomainCustomer | null> {
+    const customer = await this.customerModel.findOne({ email }).lean();
+
+    return this.customerToDomainCustomer(customer?.toObject());
+  }
+
+  /**
+   * Update info of a customer by email
+   * @param email customer email
+   * @param partial customer info
+   * @returns
+   */
+  async updateByEmail(
+    email: string,
+    partial: Partial<DomainCustomer>
+  ): Promise<DomainCustomer | null> {
+    const { modifiedCount } = await this.customerModel.updateOne(
+      { email },
+      { $set: partial }
+    );
+
+    if (modifiedCount === 0) return null;
+
+    const customerDoc = await this.customerModel.findOne({ email });
+
+    if (!customerDoc) return null;
+
+    return this.customerToDomainCustomer(customerDoc!.toObject());
+  }
+
+  /**
+   * Delete a customer by email
+   * @param email email of customer who want to delete
+   * @returns
+   */
+  async deleteByEmail(email: string): Promise<boolean> {
+    const { deletedCount } = await this.customerModel.deleteOne({ email });
+    return deletedCount === 1;
+  }
+
+  customerToDomainCustomer(customer: Customer): DomainCustomer {
+    console.log("Phoneeeeeeeeee: ", customer.phoneNumber);
     return new DomainCustomer(
-      created.firstName,
-      created.lastName,
-      new Date(created.dateOfBirth),
-      new PhoneNumber(created.phoneNumber),
-      new Email(created.email),
-      new BankAccountNumber(created.bankAccountNumber)
+      customer.firstName,
+      customer.lastName,
+      new Date(customer.dateOfBirth),
+      new PhoneNumber(customer.phoneNumber),
+      new Email(customer.email),
+      new BankAccountNumber(customer.bankAccountNumber)
     );
   }
 }
