@@ -15,6 +15,8 @@ import { GetAllCustomersQueryHandler } from "./application/queries/impl/get-all-
 // Presentation layer
 import { CustomerController } from "./presentation/customer.controller";
 import { I_CUSTOMER_REPOSITORY } from "./domain/interfaces/customer-repository.interface";
+import { UpdateCustomerHandler } from "./application/commands/impl/update-customer.handler";
+import { DeleteCustomerHandler } from "./application/commands/impl/delete-customer.command-handler";
 
 @Module({
   imports: [
@@ -26,6 +28,8 @@ import { I_CUSTOMER_REPOSITORY } from "./domain/interfaces/customer-repository.i
   providers: [
     CreateCustomerCommandHandler,
     GetAllCustomersQueryHandler,
+    UpdateCustomerHandler,
+    DeleteCustomerHandler,
     CustomerRepository,
     CustomerService,
     {
