@@ -5,11 +5,15 @@ import {
   HttpCode,
   HttpStatus,
   Get,
+  Put,
+  Param,
+  Delete,
 } from "@nestjs/common";
 import { CustomerService } from "../application/services/customer.service";
-import { CustomerResponseDto } from "./dtos/customer-response.dto";
+import { CustomerResponseDto } from "./dtos/customer.response.dto";
 import { CreateCustomerRequestDto } from "./dtos/create-customer-request.dto";
 import { ApiCreatedResponse, ApiTags } from "@nestjs/swagger";
+import { UpdateCustomerRequestDto } from "./dtos/update-customer.request.dto";
 
 @ApiTags("customers")
 @Controller("customers")
@@ -41,5 +45,19 @@ export class CustomerController {
     const customers = await this.customerService.findAll();
 
     return customers;
+  }
+
+  @Put(":email")
+  async update(
+    @Param("email") email: string,
+    @Body() dto: UpdateCustomerRequestDto
+  ) {
+    return this.customerService.update(email, dto);
+  }
+
+  @Delete(":email")
+  @HttpCode(204)
+  async remove(@Param("email") email: string) {
+    return this.customerService.delete(email);
   }
 }
