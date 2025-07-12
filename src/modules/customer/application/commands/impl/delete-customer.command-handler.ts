@@ -7,7 +7,7 @@ import {
 import { DeleteCustomerCommand } from "./delete-customer.command";
 
 @CommandHandler(DeleteCustomerCommand)
-export class DeleteCustomerHandler
+export class DeleteCustomerCommandHandler
   implements ICommandHandler<DeleteCustomerCommand>
 {
   constructor(

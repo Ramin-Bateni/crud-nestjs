@@ -7,7 +7,7 @@ import {
 import { UpdateCustomerCommand } from "./update-customer.command";
 
 @CommandHandler(UpdateCustomerCommand)
-export class UpdateCustomerHandler
+export class UpdateCustomerCommandHandler
   implements ICommandHandler<UpdateCustomerCommand>
 {
   constructor(

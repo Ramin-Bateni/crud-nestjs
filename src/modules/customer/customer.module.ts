@@ -12,11 +12,12 @@ import {
 import { CreateCustomerCommandHandler } from "./application/commands/impl/create-customer.command-handler";
 import { CustomerService } from "./application/services/customer.service";
 import { GetAllCustomersQueryHandler } from "./application/queries/impl/get-all-customers.query-handler";
+import { GetCustomerByEmailQueryHandler } from "./application/queries/impl/get-customer-by-email.query-handler";
 // Presentation layer
 import { CustomerController } from "./presentation/customer.controller";
 import { I_CUSTOMER_REPOSITORY } from "./domain/interfaces/customer-repository.interface";
-import { UpdateCustomerHandler } from "./application/commands/impl/update-customer.handler";
-import { DeleteCustomerHandler } from "./application/commands/impl/delete-customer.command-handler";
+import { UpdateCustomerCommandHandler } from "./application/commands/impl/update-customer.handler";
+import { DeleteCustomerCommandHandler } from "./application/commands/impl/delete-customer.command-handler";
 
 @Module({
   imports: [
@@ -26,10 +27,14 @@ import { DeleteCustomerHandler } from "./application/commands/impl/delete-custom
     ]),
   ],
   providers: [
-    CreateCustomerCommandHandler,
+    // query handlers
     GetAllCustomersQueryHandler,
-    UpdateCustomerHandler,
-    DeleteCustomerHandler,
+    GetCustomerByEmailQueryHandler,
+    // command handlers
+    CreateCustomerCommandHandler,
+    UpdateCustomerCommandHandler,
+    DeleteCustomerCommandHandler,
+    // other providers
     CustomerRepository,
     CustomerService,
     {
