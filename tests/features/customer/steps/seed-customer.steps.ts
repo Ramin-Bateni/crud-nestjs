@@ -50,7 +50,7 @@ Given(
   }
 );
 
-Then("go to next scenarios", function (this: CustomWorld) {
+Then("show log of World's properties", function (this: CustomWorld) {
   console.log("---- WORLD SEED ----");
   console.log(JSON.stringify(this.seed, null, 2));
 

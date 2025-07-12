@@ -10,4 +10,4 @@ Feature: Seed DB
       # | Sofía     | García    | 1988-03-30 | +34612345678   | sofia.garcia@example.es   | ES9121000418450200051332    |
       # | Mario     | Rossi     | 1995-06-18 | +393491234567  | mario.rossi@example.it    | IT60X0542811101000000123456 |
       # | Anna      | Jansen    | 1983-09-25 | +31612345678   | anna.jansen@example.nl    | NL91ABNA0417164300          |
-    Then go to next scenarios
+   # Then show log of World's properties
