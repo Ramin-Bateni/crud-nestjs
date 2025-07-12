@@ -6,21 +6,21 @@ import {
   I_CUSTOMER_REPOSITORY,
   ICustomerRepository,
 } from "@/modules/customer/domain/interfaces/customer-repository.interface";
-import { DeleteCustomerHandler } from "@/modules/customer/application/commands/impl/delete-customer.command-handler";
-import { UpdateCustomerHandler } from "@/modules/customer/application/commands/impl/update-customer.handler";
+import { DeleteCustomerCommandHandler } from "@/modules/customer/application/commands/impl/delete-customer.command-handler";
+import { UpdateCustomerCommandHandler } from "@/modules/customer/application/commands/impl/update-customer.handler";
 import { UpdateCustomerCommand } from "@/modules/customer/application/commands/impl/update-customer.command";
 import { DeleteCustomerCommand } from "@/modules/customer/application/commands/impl/delete-customer.command";
 
 describe("Update & Delete Customer Handlers", () => {
-  let updateHandler: UpdateCustomerHandler;
-  let deleteHandler: DeleteCustomerHandler;
+  let updateHandler: UpdateCustomerCommandHandler;
+  let deleteHandler: DeleteCustomerCommandHandler;
   let repo: jest.Mocked<ICustomerRepository>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        UpdateCustomerHandler,
-        DeleteCustomerHandler,
+        UpdateCustomerCommandHandler,
+        DeleteCustomerCommandHandler,
         {
           provide: I_CUSTOMER_REPOSITORY,
           useValue: {
@@ -31,8 +31,8 @@ describe("Update & Delete Customer Handlers", () => {
       ],
     }).compile();
 
-    updateHandler = module.get(UpdateCustomerHandler);
-    deleteHandler = module.get(DeleteCustomerHandler);
+    updateHandler = module.get(UpdateCustomerCommandHandler);
+    deleteHandler = module.get(DeleteCustomerCommandHandler);
     repo = module.get(I_CUSTOMER_REPOSITORY);
   });
 
