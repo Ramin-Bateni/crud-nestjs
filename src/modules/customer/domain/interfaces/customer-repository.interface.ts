@@ -22,4 +22,15 @@ export interface ICustomerRepository {
    * Get all customers
    */
   findAll(): Promise<DomainCustomer[]>;
+
+  findByEmail(email: string): Promise<DomainCustomer | null>;
+
+  /** Update by unique email, return updated entity or null if not found */
+  updateByEmail(
+    email: string,
+    partial: Partial<DomainCustomer>
+  ): Promise<DomainCustomer | null>;
+
+  /** Delete by unique email, return true if deleted */
+  deleteByEmail(email: string): Promise<boolean>;
 }
