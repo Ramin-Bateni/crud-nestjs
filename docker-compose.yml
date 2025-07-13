@@ -1,18 +1,24 @@
-# docker-compose.yml
-version: "3.9"
+version: "3.8"
 
 services:
   mongodb:
-    image: mongo:6.0
-    container_name: customer-mongo
-    restart: always
-    environment:
-      MONGO_INITDB_DATABASE: crud-nestjs
+    image: mongo:6
+    container_name: crud-mongodb
     ports:
       - "27017:27017"
     volumes:
       - mongo_data:/data/db
-      - ./mongo-init:/docker-entrypoint-initdb.d:ro
+
+  app:
+    build: .
+    container_name: crud-app
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/crud-nestjs
+      - NODE_ENV=production
+    depends_on:
+      - mongodb
 
 volumes:
   mongo_data:
