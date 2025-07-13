@@ -1,3 +1,127 @@
+# CRUD-NestJS
+
+A simple, production-style CRUD API built with NestJS, demonstrating Clean Architecture, CQRS, TDD and BDD practices.
+<div><i>Developer:   Ramin Bateni Parvar</i></div>
+
+## Architecture & Patterns
+
+- **Clean Architecture**: clear separation of layers (Domain, Application, Infrastructure, Presentation)  
+- **Domain-Driven Design**: value objects for `PhoneNumber`, `Email`, `BankAccountNumber`  
+- **CQRS**: separate Command and Query handlers  
+- **TDD & BDD**:  
+  - Unit tests with Jest  
+  - End-to-end and feature tests with Cucumber.js  
+- **Validation**:  
+  - Mobile-only phone validation via `libphonenumber-js`  
+  - IBAN format check for bank accounts  
+  - Unique constraints on `email`, and on `(firstName, lastName, dateOfBirth)`
+
+![Project Structure](assets/project-structure_01.png)
+
+
+## API Documentation
+
+Once the server is running, visit:
+
+```
+http://localhost:3000/api
+```
+
+to explore endpoints:
+
+- `GET /customers`  
+- `GET /customers/:email`  
+- `POST /customers`  
+- `PUT /customers/:email`  
+- `DELETE /customers/:email`  
+
+<div align="center">
+	<img src="assets/swagger-endpoints_01.png" caption="Swagger Endpoints" alt="Swagger Endpoints" />
+</div>
+
+### Duplication customer errors - 409
+
+<div align="center">
+	<img src="assets/swagger-duplicate_01.png" caption="Swagger Endpoints" alt="Swagger Endpoints" />
+</div>
+
+### Success results and statues codes
+
+<div align="center">
+	<img src="assets/swagger-creation-and-find-all_01.png" caption="Swagger Endpoints" alt="Swagger Endpoints" />
+</div>
+
+---
+
+### Test results (BDD / Unit / E2E Tests)
+
+<div align="center">
+	<img src="assets/test-results_01.png" caption="Test Results" alt="Test Results" />
+</div>
+
+## Features
+
+1. **Full CRUD** for `Customer`  
+2. **CQRS**:  
+   - `CreateCustomerCommandHandler`, `UpdateCustomerCommandHandler`, `DeleteCustomerCommandHandler`  
+   - `GetAllCustomersQueryHandler`, `GetCustomerByEmailQueryHandler`  
+3. **Validation & Errors**:  
+   - `NotFoundException` (404) on missing records  
+   - `409 Conflict` for duplicates (Mongo duplicate-key filter)  
+4. **API Documentation** via Swagger UI  
+5. **Docker Compose** setup for NestJS + MongoDB
+6. Changes are organized into **atomic**, **descriptive Git commits**. Each reflecting a single development step (feature addition, refactoring, or bug fix)—to ensure a clear, maintainable project history.
+
+---
+
+## Getting Started
+
+1. **Install dependencies**  
+   ```bash
+   npm install
+   ```
+2. **Run locally**  
+   ```bash
+   npm run start:dev
+   ```
+3. **Run tests**  
+   - Unit:  
+     ```bash
+     npm test:unit
+     ```  
+   - BDD features:  
+     ```bash
+     npm run test:bdd
+   - E2E:  
+	 ```bash
+	 npm run test:e2e
+     ```
+
+---
+
+## Docker
+
+Bring up both the API and MongoDB with one command:
+
+```bash
+docker-compose up --build
+```
+<div align="center">
+	<img src="assets/run-mongodb-in-docker_01.png" caption="MongoDB in Docker" alt="MongoDB in Docker" />
+</div>
+
+---
+
+## Debugging
+
+Use `F5` in VSCode (launch configuration) to debug project or BDD / Cucumber features:
+
+<div align="center">
+	<img src="assets/debug_01.png" caption="Debugging in VSCode" alt="Debugging in VSCode" />
+</div>
+
+--------------------------------------------------------
+
 # CRUD Code Test 
 
 Please read each note very carefully!
